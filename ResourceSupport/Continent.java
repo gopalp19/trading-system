@@ -1,5 +1,8 @@
 package ResourceSupport;
 
+/**
+ * Enumeration of continents
+ */
 public enum Continent {
     EUROPE("Europe"),
     AMERICA("America"),

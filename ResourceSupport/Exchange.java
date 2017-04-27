@@ -1,5 +1,10 @@
 package ResourceSupport;
 
+import java.util.ArrayList;
+
+/**
+ * Enumeration of exchanges.
+ */
 public enum Exchange {
     EURONEXT_PARIS("Euronext Paris", Continent.EUROPE, Country.FRANCE),
     NEW_YORK_STOCK_EXCHANGE("New York Stock Exchange", Continent.AMERICA, Country.USA),
@@ -32,5 +37,33 @@ public enum Exchange {
     @Override
     public String toString() {
         return this.string;
+    }
+
+    /**
+     * Return a list of the indices (enum ordinals) for stocks traded on this exchange.
+     * @return an ArrayList of indices to stocks traded on this exchange
+     */
+    ArrayList<Integer> getStockIndices() {
+        ArrayList<Integer> list = new ArrayList<>();
+        for (Stock stock : Stock.values()) {
+            if (stock.exchange == this) {
+                list.add(stock.ordinal());
+            }
+        }
+        return list;
+    }
+
+    /**
+     * Return a list of stocks traded on this exchange
+     * @return an ArrayList of stocks traded on this exchange
+     */
+    ArrayList<Stock> getStocks() {
+        ArrayList<Stock> list = new ArrayList<>();
+        for (Stock stock : Stock.values()) {
+            if (stock.exchange == this) {
+                list.add(stock);
+            }
+        }
+        return list;
     }
 }

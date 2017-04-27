@@ -1,5 +1,8 @@
 package ResourceSupport;
 
+/**
+ * Enumeration of countries.
+ */
 public enum Country {
     FRANCE("France", Continent.EUROPE),
     USA("USA", Continent.AMERICA),

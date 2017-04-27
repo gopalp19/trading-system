@@ -1,5 +1,8 @@
 package ResourceSupport;
 
+/**
+ * Enumeration of stocks
+ */
 public enum Stock {
     ACCOR("ACCOR", Exchange.EURONEXT_PARIS, Country.FRANCE, Continent.EUROPE),
     AIR_LIQUIDE("AIR LIQUIDE", Exchange.EURONEXT_PARIS, Country.FRANCE, Continent.EUROPE),

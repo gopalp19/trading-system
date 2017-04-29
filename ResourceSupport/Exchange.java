@@ -24,6 +24,8 @@ public enum Exchange {
     JOHANNESBURG("Johannesburg", Continent.AFRICA, Country.SOUTH_AFRICA),
     SAO_PAULO("Sao Paulo", Continent.AMERICA, Country.BRAZIL);
 
+    private static final int START_PORT = 52044;
+
     String string;
     Continent continent;
     Country country;
@@ -37,6 +39,14 @@ public enum Exchange {
     @Override
     public String toString() {
         return this.string;
+    }
+
+    /**
+     * Return the assigned port number of this exchange
+     * @return int holding the assigned port number of this exchange
+     */
+    int portNum() {
+        return START_PORT + this.ordinal();
     }
 
     /**

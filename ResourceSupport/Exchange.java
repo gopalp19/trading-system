@@ -1,44 +1,57 @@
 package ResourceSupport;
 
 import java.util.ArrayList;
+import static ResourceSupport.Country.*;
 
 /**
  * Enumeration of exchanges.
  */
 public enum Exchange {
-    EURONEXT_PARIS("Euronext Paris", Continent.EUROPE, Country.FRANCE),
-    NEW_YORK_STOCK_EXCHANGE("New York Stock Exchange", Continent.AMERICA, Country.USA),
-    FRANKFURT("Frankfurt", Continent.EUROPE, Country.GERMANY),
-    LONDON("London", Continent.EUROPE, Country.UK),
-    TOKYO("Tokyo", Continent.ASIA, Country.JAPAN),
-    HONG_KONG("Hong Kong", Continent.ASIA, Country.CHINA),
-    SHANGHAI("Shanghai", Continent.ASIA, Country.CHINA),
-    BRUSSELS("Brussels", Continent.EUROPE, Country.BELGIUM),
-    LISBON("Lisbon", Continent.EUROPE, Country.PORTUGAL),
-    SHENZHEN("Shenzhen", Continent.ASIA, Country.CHINA),
-    TORONTO("Toronto", Continent.AMERICA, Country.CANADA),
-    BOMBAY("Bombay", Continent.ASIA, Country.INDIA),
-    ZURICH("Zurich", Continent.EUROPE, Country.SWITZERLAND),
-    SYDNEY("Sydney", Continent.ASIA, Country.AUSTRALIA),
-    SEOUL("Seoul", Continent.ASIA, Country.KOREA),
-    JOHANNESBURG("Johannesburg", Continent.AFRICA, Country.SOUTH_AFRICA),
-    SAO_PAULO("Sao Paulo", Continent.AMERICA, Country.BRAZIL);
+    EURONEXT_PARIS("Euronext Paris", FRANCE),
+    NEW_YORK_STOCK_EXCHANGE("New York Stock Exchange", USA),
+    FRANKFURT("Frankfurt", GERMANY),
+    LONDON("London", UK),
+    TOKYO("Tokyo", JAPAN),
+    HONG_KONG("Hong Kong", CHINA),
+    SHANGHAI("Shanghai", CHINA),
+    BRUSSELS("Brussels", BELGIUM),
+    LISBON("Lisbon", PORTUGAL),
+    SHENZHEN("Shenzhen", CHINA),
+    TORONTO("Toronto", CANADA),
+    BOMBAY("Bombay", INDIA),
+    ZURICH("Zurich", SWITZERLAND),
+    SYDNEY("Sydney", AUSTRALIA),
+    SEOUL("Seoul", KOREA),
+    JOHANNESBURG("Johannesburg", SOUTH_AFRICA),
+    SAO_PAULO("Sao Paulo", BRAZIL);
 
     private static final int START_PORT = 52044;
 
-    String string;
-    Continent continent;
-    Country country;
+    public String textString;
+    private Country country;
 
-    Exchange(String string, Continent continent, Country country) {
-        this.string = string;
-        this.continent = continent;
+    /**
+     * private constructor
+     */
+    Exchange(String textString, Country country) {
+        this.textString = textString;
         this.country = country;
     }
 
-    @Override
-    public String toString() {
-        return this.string;
+    /**
+     * Get this exchange's country.
+     * @return this exchange's country.
+     */
+    Country country() {
+        return this.country;
+    }
+
+    /**
+     * Get this exchange's continent.
+     * @return this  exchange's continent.
+     */
+    Continent continent() {
+        return this.country.continent();
     }
 
     /**
@@ -56,7 +69,7 @@ public enum Exchange {
     ArrayList<Integer> getStockIndices() {
         ArrayList<Integer> list = new ArrayList<>();
         for (Stock stock : Stock.values()) {
-            if (stock.exchange == this) {
+            if (stock.exchange() == this) {
                 list.add(stock.ordinal());
             }
         }
@@ -70,7 +83,7 @@ public enum Exchange {
     ArrayList<Stock> getStocks() {
         ArrayList<Stock> list = new ArrayList<>();
         for (Stock stock : Stock.values()) {
-            if (stock.exchange == this) {
+            if (stock.exchange() == this) {
                 list.add(stock);
             }
         }

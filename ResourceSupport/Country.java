@@ -1,36 +1,42 @@
 package ResourceSupport;
 
+import static ResourceSupport.Continent.*;
+
 /**
  * Enumeration of countries.
  */
 public enum Country {
-    FRANCE("France", Continent.EUROPE),
-    USA("USA", Continent.AMERICA),
-    GERMANY("Germany", Continent.EUROPE),
-    UK("UK", Continent.EUROPE),
-    JAPAN("Japan", Continent.ASIA),
-    CHINA("China", Continent.ASIA),
-    BELGIUM("Belgium", Continent.EUROPE),
-    PORTUGAL("Portugal", Continent.EUROPE),
-    CANADA("Canada", Continent.AMERICA),
-    INDIA("India", Continent.ASIA),
-    SWITZERLAND("Switzerland", Continent.EUROPE),
-    AUSTRALIA("Australia", Continent.ASIA),
-    KOREA("Korea", Continent.ASIA),
-    SOUTH_AFRICA("South Africa", Continent.AFRICA),
-    BRAZIL("Brazil", Continent.AMERICA);
+    FRANCE("France", EUROPE),
+    USA("USA", AMERICA),
+    GERMANY("Germany", EUROPE),
+    UK("UK", EUROPE),
+    JAPAN("Japan", ASIA),
+    CHINA("China", ASIA),
+    BELGIUM("Belgium", EUROPE),
+    PORTUGAL("Portugal", EUROPE),
+    CANADA("Canada", AMERICA),
+    INDIA("India", ASIA),
+    SWITZERLAND("Switzerland", EUROPE),
+    AUSTRALIA("Australia", ASIA),
+    KOREA("Korea", ASIA),
+    SOUTH_AFRICA("South Africa", AFRICA),
+    BRAZIL("Brazil", AMERICA);
 
-    Continent continent;
-    String string;
+    private Continent continent;
+    public String textString;
 
-    Country(String string, Continent continent) {
+    Country(String textString, Continent continent) {
         this.continent = continent;
-        this.string = string;
+        this.textString = textString;
     }
 
-    @Override
-    public String toString() {
-        return this.string;
+    /**
+     * Get this country's continent.
+     * @return this country's continent
+     */
+    public Continent continent() {
+        return this.continent;
     }
+
 }
 

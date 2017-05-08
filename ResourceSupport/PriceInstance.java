@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 public class PriceInstance {
     private final Stock stock;
     private final LocalDateTime dateTime;
-    private final float price;
+    private final double price;
 
-    PriceInstance(Stock stock, LocalDateTime dateTime, float price) {
+    PriceInstance(Stock stock, LocalDateTime dateTime, double price) {
         this.stock = stock;
         this.dateTime = dateTime;
         this.price = price;
@@ -25,7 +25,7 @@ public class PriceInstance {
         return dateTime;
     }
 
-    public float price() {
+    public double price() {
         return price;
     }
 }

@@ -14,7 +14,7 @@ public class MessageBroker {
      * @return a Message subclass instance representing parsed String(s)
      * @throws MalformedMessageException if any exception occurs during parsing
      */
-    Message parse(List<String> stringList) throws MalformedMessageException {
+    public Message parse(List<String> stringList) throws MalformedMessageException {
         try {
             String method = stringList.get(0).trim();
             switch (method) {

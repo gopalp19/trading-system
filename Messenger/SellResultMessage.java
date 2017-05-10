@@ -79,7 +79,7 @@ public final class SellResultMessage extends Message {
      * @return an ArrayList of Strings representing the information in this message instance.
      */
     @Override
-    ArrayList<String> toStringList() {
+    public ArrayList<String> toStringList() {
         ArrayList<String> stringList = new ArrayList<>();
         stringList.add("SELL_RESULT");
         if (sellerExchange != null) {

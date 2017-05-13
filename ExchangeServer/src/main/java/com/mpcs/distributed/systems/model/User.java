@@ -14,7 +14,14 @@ public class User {
 
     private String userName;
 
-    private String password;
+    private String exchangeName;
+    
+    protected User() {}
+
+	public User(String userName, String exchangeName) {
+		this.userName = userName;
+		this.exchangeName = exchangeName;
+	}
 
 	public Integer getId() {
 		return id;
@@ -32,11 +39,11 @@ public class User {
 		this.userName = userName;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getExchangeName() {
+		return exchangeName;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setExchangeName(String exchangeName) {
+		this.exchangeName = exchangeName;
 	}
 }

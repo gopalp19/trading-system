@@ -3,30 +3,40 @@ package com.mpcs.distributed.systems;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 
-import java.sql.Connection;
+import com.mpcs.distributed.systems.application.AppContext;
+import com.mpcs.distributed.systems.model.User;
+import com.mpcs.distributed.systems.repositories.UserRepository;
+import com.mpcs.distributed.systems.services.ClientConnectionPool;
 
 @SpringBootApplication
-public class ExchangeServer {
+public class ExchangeServer extends SpringBootServletInitializer {
+	
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(ExchangeServer.class);
+	}
+	
+	@Bean
+	public CommandLineRunner initBeans(ApplicationContext ctx, UserRepository userRepository) {
+		return (args) -> {
+            AppContext.setApplicationContext(ctx);
+			userRepository.save(new User("gopalp", "NYSE"));
+		};
+	}
 
 	public static void main(String[] args) {
 		String exchangeServerName = args[0];
 
         SpringApplication.run(ExchangeServer.class, args);
-
-        /*String url = "jdbc:mysql://exchange-server-db.cj3vzodbpmog.us-east-1.rds.amazonaws.com:3306/ExchangeServerDB";
-        try {
-			Connection con = DriverManager.getConnection(url, "master", "master123");
-			con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
         
 		startSystem(exchangeServerName);
 

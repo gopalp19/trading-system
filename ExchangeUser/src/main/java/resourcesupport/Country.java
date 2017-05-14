@@ -1,6 +1,6 @@
-package ResourceSupport;
+package resourcesupport;
 
-import static ResourceSupport.Continent.*;
+import static resourcesupport.Continent.*;
 
 /**
  * Enumeration of countries.

@@ -1,4 +1,4 @@
-package ResourceSupport;
+package resourcesupport;
 
 import java.io.File;
 import java.io.FileNotFoundException;

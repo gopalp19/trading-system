@@ -1,6 +1,6 @@
-package ResourceSupport;
+package resourcesupport;
 
-import static ResourceSupport.Exchange.*;
+import static resourcesupport.Exchange.*;
 
 /**
  * Enumeration of stocks

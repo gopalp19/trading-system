@@ -1,4 +1,4 @@
-package ResourceSupport;
+package resourcesupport;
 
 /**
  * Enumeration of Mutual Funds.

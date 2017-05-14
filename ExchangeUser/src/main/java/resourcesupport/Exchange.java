@@ -1,7 +1,7 @@
-package ResourceSupport;
+package resourcesupport;
 
 import java.util.ArrayList;
-import static ResourceSupport.Country.*;
+import static resourcesupport.Country.*;
 
 /**
  * Enumeration of exchanges.
@@ -58,7 +58,7 @@ public enum Exchange {
      * Return the assigned port number of this exchange
      * @return int holding the assigned port number of this exchange
      */
-    int portNum() {
+    public int portNum() {
         return START_PORT + this.ordinal();
     }
 

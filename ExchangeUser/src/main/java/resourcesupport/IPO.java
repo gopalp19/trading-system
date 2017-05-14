@@ -1,4 +1,4 @@
-package ResourceSupport;
+package resourcesupport;
 
 import java.time.LocalDateTime;
 

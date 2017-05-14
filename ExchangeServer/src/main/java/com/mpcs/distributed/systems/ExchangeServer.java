@@ -19,7 +19,8 @@ import com.mpcs.distributed.systems.services.ClientConnectionPool;
 
 @SpringBootApplication
 public class ExchangeServer extends SpringBootServletInitializer {
-	
+    static Exchange exchange = null;
+
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(ExchangeServer.class);
@@ -35,6 +36,12 @@ public class ExchangeServer extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		String exchangeServerName = args[0];
+        try {
+        	exchange = Exchange.valueOf(exchangeServerName);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            System.out.println("Error: specified invalid exchange name. See resourcesupport.Exchange for list of valid names.");
+            System.exit(1);
+        }
 
         SpringApplication.run(ExchangeServer.class, args);
         
@@ -47,7 +54,7 @@ public class ExchangeServer extends SpringBootServletInitializer {
 		
 		ServerSocket serverSocket = null;
 		try {
-			serverSocket = new ServerSocket(9090);
+			serverSocket = new ServerSocket(exchange.portNum());
 
 			ClientConnectionPool pool = new ClientConnectionPool(serverSocket);
 		    pool.start();

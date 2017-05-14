@@ -1,6 +1,8 @@
 package resourcesupport;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+
 import static resourcesupport.Country.*;
 
 /**
@@ -88,5 +90,19 @@ public enum Exchange {
             }
         }
         return list;
+    }
+    
+    /**
+     * Return an array of other exchanges on this exchange's continent.
+     * @return Exchange[] of neighbors
+     */
+    public Exchange[] neighbors() {
+    	LinkedList<Exchange> exchangeList = new LinkedList<>();
+    	for (Exchange exchange : Exchange.values()) {
+    		if (exchange.continent() == this.continent() && this != exchange) {
+    			exchangeList.add(exchange);
+    		}
+    	}
+    	return exchangeList.toArray(new Exchange[exchangeList.size()]);
     }
 }

@@ -23,5 +23,24 @@ public enum Continent {
     public int portNum() {
         return STARTING_PORT + this.ordinal();
     }
+    
+    /**
+     * Get an array of continents this continent is connected to.
+     * @return an array of continents this continent is connected to.
+     */
+    public Continent[] neighbors() {
+    	switch (this) {
+            case EUROPE:
+                return new Continent[] {AMERICA, ASIA};
+    	    case AMERICA:
+    	    	return new Continent[] {EUROPE};
+    	    case ASIA:
+    	    	return new Continent[] {EUROPE, AFRICA};
+    	    case AFRICA:
+    	    	return new Continent[] {ASIA};
+    		default:
+    			return null;
+    	}
+    }
 
 }

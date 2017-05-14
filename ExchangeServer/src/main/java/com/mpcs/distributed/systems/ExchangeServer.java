@@ -30,7 +30,7 @@ public class ExchangeServer extends SpringBootServletInitializer {
 	public CommandLineRunner initBeans(ApplicationContext ctx, UserRepository userRepository) {
 		return (args) -> {
             AppContext.setApplicationContext(ctx);
-			userRepository.save(new User("gopalp", "NYSE"));
+			userRepository.save(new User("gopalp", exchange.textString));
 		};
 	}
 

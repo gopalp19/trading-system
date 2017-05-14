@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import resourcesupport.*;
 
 public class ExchangeUser {
 
@@ -19,9 +20,11 @@ public class ExchangeUser {
         
         //exchangeName should be used to find port
         String exchangeName = userInputSplit[1];
+        Exchange exchange = Exchange.valueOf(exchangeName);
+        
         String userName = userInputSplit[2];
 
-        Socket s = new Socket("localhost", 9090);
+        Socket s = new Socket("localhost", exchange.portNum());
         
 	    //Stream from master
 	    BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));

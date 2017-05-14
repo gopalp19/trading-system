@@ -38,10 +38,18 @@ public class ClientConnection extends Thread{
 
         	//Should be [client|exchange]:[userName|exchangeName] only
         	String clientsInput = inputStream.nextLine();
+        	String[] splitted = clientsInput.split(":");
+        	if (splitted[0].equals("exchange")) {
+        		// only time a peer contacts another peer directly is during election
+        		// pass this socket to some election manager
+        	} else if (!splitted[0].equals("client")) {
+        		System.out.println("Error: expecting first message on socket to follow format: [client|exchange]:[userName|exchangeName]");
+        		System.out.println("Received instead: " + clientsInput);
+        		System.exit(1);;
+        	}
+            String userName = splitted[1];
 
-            String[] userName = clientsInput.split(":");
-
-    		boolean userValid = userService.isUserValid(userName[1], ExchangeServer.exchange.toString());
+    		boolean userValid = userService.isUserValid(userName, ExchangeServer.exchange.toString());
     		
     		if(userValid){
         		outputStream.println("Login succesful. Connection established to " + ExchangeServer.exchange);

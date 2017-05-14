@@ -19,7 +19,7 @@ import com.mpcs.distributed.systems.services.ClientConnectionPool;
 
 @SpringBootApplication
 public class ExchangeServer extends SpringBootServletInitializer {
-    static Exchange exchange = null;
+    public static Exchange exchange = null;
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
@@ -30,7 +30,7 @@ public class ExchangeServer extends SpringBootServletInitializer {
 	public CommandLineRunner initBeans(ApplicationContext ctx, UserRepository userRepository) {
 		return (args) -> {
             AppContext.setApplicationContext(ctx);
-			userRepository.save(new User("gopalp", exchange.textString));
+			userRepository.save(new User("gopalp", exchange.toString()));
 		};
 	}
 

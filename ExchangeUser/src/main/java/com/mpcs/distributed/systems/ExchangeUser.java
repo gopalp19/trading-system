@@ -20,8 +20,13 @@ public class ExchangeUser {
         
         //exchangeName should be used to find port
         String exchangeName = userInputSplit[1];
-        Exchange exchange = Exchange.valueOf(exchangeName);
-        
+        Exchange exchange = null;
+        try {
+        	exchange = Exchange.valueOf(exchangeName);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            System.out.println("Error: specified invalid exchange name. See resourcesupport.Exchange for list of valid names.");
+            System.exit(1);
+        }
         String userName = userInputSplit[2];
 
         Socket s = new Socket("localhost", exchange.portNum());

@@ -20,7 +20,7 @@ public enum Continent {
      * Get the assigned port of this continent
      * @return int holding assigned port number of this continent
      */
-    int portNum() {
+    public int portNum() {
         return STARTING_PORT + this.ordinal();
     }
 

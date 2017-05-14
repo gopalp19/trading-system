@@ -931,7 +931,7 @@ public enum Stock {
      * Get this stock's exchange.
      * @return this stock's exchange
      */
-    Exchange exchange() {
+    public Exchange exchange() {
         return this.exchange;
     }
 
@@ -939,7 +939,7 @@ public enum Stock {
      * Get this stock's country.
      * @return this stock's country
      */
-    Country country() {
+    public Country country() {
         return this.exchange.country();
     }
 
@@ -947,7 +947,7 @@ public enum Stock {
      * Get this stock's continent.
      * @return this stock's continent
      */
-    Continent continent() {
+    public Continent continent() {
         return this.exchange.country().continent();
     }
 

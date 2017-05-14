@@ -42,7 +42,7 @@ public enum Exchange {
      * Get this exchange's country.
      * @return this exchange's country.
      */
-    Country country() {
+    public Country country() {
         return this.country;
     }
 
@@ -50,7 +50,7 @@ public enum Exchange {
      * Get this exchange's continent.
      * @return this  exchange's continent.
      */
-    Continent continent() {
+    public Continent continent() {
         return this.country.continent();
     }
 
@@ -66,7 +66,7 @@ public enum Exchange {
      * Return a list of the indices (enum ordinals) for stocks traded on this exchange.
      * @return an ArrayList of indices to stocks traded on this exchange
      */
-    ArrayList<Integer> getStockIndices() {
+    public ArrayList<Integer> getStockIndices() {
         ArrayList<Integer> list = new ArrayList<>();
         for (Stock stock : Stock.values()) {
             if (stock.exchange() == this) {
@@ -80,7 +80,7 @@ public enum Exchange {
      * Return a list of stocks traded on this exchange
      * @return an ArrayList of stocks traded on this exchange
      */
-    ArrayList<Stock> getStocks() {
+    public ArrayList<Stock> getStocks() {
         ArrayList<Stock> list = new ArrayList<>();
         for (Stock stock : Stock.values()) {
             if (stock.exchange() == this) {

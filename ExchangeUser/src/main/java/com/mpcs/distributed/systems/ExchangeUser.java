@@ -37,7 +37,7 @@ public class ExchangeUser {
 	    //Stream from our client
 	    PrintWriter out = new PrintWriter(s.getOutputStream(), true);
 
-    	out.println("userName:" + userName);
+    	out.println("client:" + userName);
     	
     	String responseLine;
 	    while ((responseLine = in.readLine()) != null) {

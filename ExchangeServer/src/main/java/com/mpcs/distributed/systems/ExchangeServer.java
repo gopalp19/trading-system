@@ -3,6 +3,7 @@ package com.mpcs.distributed.systems;
 import resourcesupport.*;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,6 +20,7 @@ import com.mpcs.distributed.systems.services.ClientConnectionPool;
 
 @SpringBootApplication
 public class ExchangeServer extends SpringBootServletInitializer {
+	public static Exchange[] neighborPeers = null;
     public static Exchange exchange = null;
 
 	@Override
@@ -38,6 +40,7 @@ public class ExchangeServer extends SpringBootServletInitializer {
 		String exchangeServerName = args[0];
         try {
         	exchange = Exchange.valueOf(exchangeServerName);
+        	neighborPeers = exchange.neighbors();
         } catch (IllegalArgumentException | NullPointerException e) {
             System.out.println("Error: specified invalid exchange name. See resourcesupport.Exchange for list of valid names.");
             System.exit(1);

@@ -36,7 +36,7 @@ public class ClientConnection extends Thread{
 
         	//Logging mechanism should start here before loop
 
-        	//Should be userName only
+        	//Should be [client|exchange]:[userName|exchangeName] only
         	String clientsInput = inputStream.nextLine();
 
             String[] userName = clientsInput.split(":");

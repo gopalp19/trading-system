@@ -17,10 +17,10 @@ import com.mpcs.distributed.systems.application.AppContext;
 import com.mpcs.distributed.systems.model.User;
 import com.mpcs.distributed.systems.repositories.UserRepository;
 import com.mpcs.distributed.systems.services.ClientConnection;
-import com.mpcs.distributed.systems.services.ClientConnectionPool;
 
 @SpringBootApplication
 public class ExchangeServer extends SpringBootServletInitializer {
+	public static ClientReplier clientReplier = null;
 	public static Exchange[] neighborPeers = null;
     public static Exchange exchange = null;
 
@@ -46,11 +46,8 @@ public class ExchangeServer extends SpringBootServletInitializer {
             System.out.println("Error: specified invalid exchange name. See resourcesupport.Exchange for list of valid names.");
             System.exit(1);
         }
-
         SpringApplication.run(ExchangeServer.class, args);
-        
 		startSystem(exchangeServerName);
-
 	}
 	
 	private static void startSystem(String exchangeServerName){

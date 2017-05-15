@@ -8,9 +8,7 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import messenger.*;
-
 import org.springframework.context.ApplicationContext;
-
 import com.mpcs.distributed.systems.application.AppContext;
 
 public class ClientConnection extends Thread{
@@ -34,14 +32,16 @@ public class ClientConnection extends Thread{
         	Scanner inputStream = new Scanner(new InputStreamReader(clientSocket.getInputStream()));
         	PrintStream outputStream = new PrintStream(clientSocket.getOutputStream());
 
-        	//Logging mechanism should start here before loop
+        	//TODO - Logging mechanism should start here before loop
 
         	//Should be [client|exchange]:[userName|exchangeName] only
         	String clientsInput = inputStream.nextLine();
         	String[] splitted = clientsInput.split(":");
         	if (splitted[0].equals("exchange")) {
         		// only time a peer contacts another peer directly is during election
-        		// pass this socket to some election manager
+        		// TODO - pass this socket to some election manager
+        		System.out.println("Exchange tried to connect. Doing nothing.");
+        		return;
         	} else if (!splitted[0].equals("client")) {
         		System.out.println("Error: expecting first message on socket to follow format: [client|exchange]:[userName|exchangeName]");
         		System.out.println("Received instead: " + clientsInput);
@@ -50,12 +50,11 @@ public class ClientConnection extends Thread{
             String userName = splitted[1];
 
     		boolean userValid = userService.isUserValid(userName, ExchangeServer.exchange.toString());
-    		
-    		if(userValid){
+    	    if(userValid){
         		outputStream.println("Login succesful. Connection established to " + ExchangeServer.exchange);
+        		ExchangeServer.clientReplier.socketBank.put(userName, clientSocket);
     		}else{
         		outputStream.println("Login unssuccesful!");
-        		//TODO: Throw error? Exit?
         		return;
     		}
         	
@@ -63,7 +62,6 @@ public class ClientConnection extends Thread{
     		ArrayList<String> stringList = new ArrayList<>();
             while (inputStream.hasNextLine()) {
             	clientsInput = inputStream.nextLine();
-            	//TODO: Client has given exchange a command
             	if (!clientsInput.isEmpty()) {
             		stringList.add(clientsInput);
             	} else {
@@ -71,13 +69,14 @@ public class ClientConnection extends Thread{
             		stringList = new ArrayList<>();
                 	//processCommand(clientsInput);
             		if (message.getClass() == BuyMessage.class) {
-            			// do buy request
+            			// TODO - do buy request
             		} else if (message.getClass() == SellMessage.class) {
-            			// do sell request
+            			// TODO - do sell request
             		}
             	}           	
-            }
-        		
+            }        		
+        } catch (MalformedMessageException e) {
+        	System.out.println("Malformed message from client");
         } catch (IOException e) {
         	System.out.println("Connection to client is broken because of: " + e);
         } finally {

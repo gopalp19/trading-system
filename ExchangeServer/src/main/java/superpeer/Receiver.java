@@ -7,7 +7,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
-import Messenger.*;
+import messenger.*;
 
 public class Receiver extends Thread {
 	private Socket input;

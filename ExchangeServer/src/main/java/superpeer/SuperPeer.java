@@ -1,6 +1,6 @@
 package superpeer;
 
-import Messenger.*;
+import messenger.*;
 import java.net.Socket;
 
 /*

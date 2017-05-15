@@ -13,7 +13,7 @@ public class ExchangeUser {
 	public static void main(String[] args) throws UnknownHostException, IOException {
 
         System.out.println("Enter connection info:");
-        
+
     	BufferedReader keyboardStream = new BufferedReader(new InputStreamReader(System.in));
 		String userInput = keyboardStream.readLine();
         String[] userInputSplit = userInput.split("\\s+");

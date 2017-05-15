@@ -27,41 +27,49 @@ public class ClientReplier implements Runnable {
 	
 	public void run() {
 		while (true) {
-			if (!messageQueue.isEmpty()) {
-				// TODO - (1) parse message's destination client, (2) send message to appropriate client
-				Socket socket = null;
-				String name = null;
-				Message m = messageQueue.remove();
-				try {
-					if (m.getClass() == BuyResultMessage.class) {
-						BuyResultMessage b = (BuyResultMessage) m;
-						name = b.buyerUserName;
-						socket = socketBank.get(name);
-					} else if (m.getClass() == SellResultMessage.class) {
-						SellResultMessage s = (SellResultMessage) m;
-						name = s.sellerUserName;
-						socket = socketBank.get(name);
+			synchronized (messageQueue) {
+				if (!messageQueue.isEmpty()) {
+					// TODO - (1) parse message's destination client, (2) send message to appropriate client
+					Socket socket = null;
+					String name = null;
+					Message m = messageQueue.remove();
+					try {
+						if (m.getClass() == BuyResultMessage.class) {
+							BuyResultMessage b = (BuyResultMessage) m;
+							name = b.buyerUserName;
+							socket = socketBank.get(name);
+						} else if (m.getClass() == SellResultMessage.class) {
+							SellResultMessage s = (SellResultMessage) m;
+							name = s.sellerUserName;
+							socket = socketBank.get(name);
+						}
+					} catch (NullPointerException e) {
+						System.out.println("Cannot send message to null userName");
+						continue;					
 					}
-				} catch (NullPointerException e) {
-					System.out.println("Cannot send message to null userName");
-					continue;					
-				}
-				if (socket == null) {
-					System.out.println("No known socket for user " + name);
-					messageQueue.add(m);
-					continue;
-				}
-				try (PrintWriter pw = new PrintWriter(socket.getOutputStream())) {
-					ArrayList<String> lines = m.toStringList();
-					for (String line : lines) {
-						pw.println(line);
+					if (socket == null) {
+						System.out.println("No known socket for user " + name);
+						messageQueue.add(m);
+						continue;
 					}
-					pw.println();
-				} catch (IOException e) {
-					messageQueue.add(m);
-					System.out.println("IOException when writing to client " + name);
-					continue;
-				}
+					try (PrintWriter pw = new PrintWriter(socket.getOutputStream())) {
+						ArrayList<String> lines = m.toStringList();
+						for (String line : lines) {
+							pw.println(line);
+						}
+						pw.println();
+					} catch (IOException e) {
+				    messageQueue.add(m);
+				    System.out.println("IOException when writing to client " + name);
+                    continue;
+			        }
+                } else {
+                	try {
+                		wait();
+                	} catch (InterruptedException e) {
+                		// do nothing
+                	}
+                }
 			}
 		}
 		

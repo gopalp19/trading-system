@@ -27,9 +27,7 @@ public class ClientConnection extends Thread{
     }
     
 	public void run() {
-        try {
-
-        	Scanner inputStream = new Scanner(new InputStreamReader(clientSocket.getInputStream()));
+        try (Scanner inputStream = new Scanner(new InputStreamReader(clientSocket.getInputStream()))){
         	PrintStream outputStream = new PrintStream(clientSocket.getOutputStream());
 
         	//TODO - Logging mechanism should start here before loop
@@ -66,13 +64,36 @@ public class ClientConnection extends Thread{
             		stringList.add(clientsInput);
             	} else {
             		Message message = MessageBroker.parse(stringList);
+            		Message outMessage;
             		stringList = new ArrayList<>();
                 	//processCommand(clientsInput);
             		if (message.getClass() == BuyMessage.class) {
             			// TODO - do buy request
+                        // temporarily auto-reply any buy request with 0 bought
+            			BuyMessage b = (BuyMessage) message;
+            			BuyResultMessage br = new BuyResultMessage();
+            			br.buyerUserName = b.buyerUserName;
+            			br.buyerExchange = b.buyerExchange;
+            			br.quantityBought = 0;
+            			br.stock = b.stock;
+            			outMessage = br;
             		} else if (message.getClass() == SellMessage.class) {
             			// TODO - do sell request
+                        // temporarily auto-confirm any sell request with 0 sold
+            			SellMessage s = (SellMessage) message;
+            			SellResultMessage sr = new SellResultMessage();
+            			sr.sellerUserName = s.sellerUserName;
+            			sr.sellerExchange = s.sellerExchange;
+            			sr.quantitySold = 0;
+            			sr.stock = s.stock;
+            			outMessage = sr;
+            		} else {
+            			continue;
             		}
+        			synchronized (ExchangeServer.clientReplier.messageQueue) {
+            			ExchangeServer.clientReplier.messageQueue.add(outMessage);   
+            			notifyAll();
+        			}
             	}           	
             }        		
         } catch (MalformedMessageException e) {

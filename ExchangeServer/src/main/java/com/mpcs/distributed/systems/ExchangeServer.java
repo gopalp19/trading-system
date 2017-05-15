@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import com.mpcs.distributed.systems.application.AppContext;
 import com.mpcs.distributed.systems.model.User;
 import com.mpcs.distributed.systems.repositories.UserRepository;
+import com.mpcs.distributed.systems.services.ClientConnection;
 import com.mpcs.distributed.systems.services.ClientConnectionPool;
 
 @SpringBootApplication
@@ -58,16 +59,17 @@ public class ExchangeServer extends SpringBootServletInitializer {
 		ServerSocket serverSocket = null;
 		try {
 			serverSocket = new ServerSocket(exchange.portNum());
-
-			ClientConnectionPool pool = new ClientConnectionPool(serverSocket);
-		    pool.start();
-		    
-			pool.join();
-			//Once pool is done, join will finish (before that, will be stuck at join)
-		        
+	    	while(!serverSocket.isClosed()){
+				try {
+		    		ClientConnection peerServer = new ClientConnection(serverSocket);
+			        peerServer.start();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	    	}
 	        System.out.println("Closing " + exchangeServerName + " exchange server!");
 		    serverSocket.close();
-		} catch (IOException | InterruptedException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		};

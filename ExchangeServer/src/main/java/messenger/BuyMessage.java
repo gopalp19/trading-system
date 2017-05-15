@@ -10,7 +10,7 @@ import java.util.*;
  */
 public final class BuyMessage extends Message {
     Exchange buyerExchange = null;
-    Integer buyerID = null;
+    String buyerUserName = null;
     Stock stock = null;
     Integer quantity = null;
     LocalDateTime timeStamp = null;
@@ -25,15 +25,15 @@ public final class BuyMessage extends Message {
     /**
      * Construct a BuyMessage instance by specifying its parameters (possibly null).
      * @param buyerExchange home Exchange of buyer
-     * @param buyerID identifying integer of buyer
+     * @param buyerUserName identifying userName of buyer
      * @param stock Stock to be purchased
      * @param quantity number of stocks to be purchased
      * @param timeStamp LocalDateTime stamp of order
      * @param orderID String identifier of this order
      */
-    public BuyMessage(Exchange buyerExchange, Integer buyerID, Stock stock, Integer quantity, LocalDateTime timeStamp, String orderID) {
+    public BuyMessage(Exchange buyerExchange, String buyerUserName, Stock stock, Integer quantity, LocalDateTime timeStamp, String orderID) {
         this.buyerExchange = buyerExchange;
-        this.buyerID = buyerID;
+        this.buyerUserName = buyerUserName;
         this.stock = stock;
         this.quantity = quantity;
         this.timeStamp = timeStamp;
@@ -54,8 +54,8 @@ public final class BuyMessage extends Message {
                 case "buyerExchange":
                     this.buyerExchange = Exchange.valueOf(value);
                     break;
-                case "buyerID":
-                    this.buyerID = Integer.parseInt(value);
+                case "buyerUserName":
+                    this.buyerUserName = value;
                     break;
                 case "stock":
                     this.stock = Stock.valueOf(value);
@@ -86,8 +86,8 @@ public final class BuyMessage extends Message {
         if (buyerExchange != null) {
             stringList.add("buyerExchange: " + buyerExchange);
         }
-        if (buyerID != null) {
-            stringList.add("buyerID: " + buyerID);
+        if (buyerUserName != null) {
+            stringList.add("buyerUserName: " + buyerUserName);
         }
         if (stock != null) {
             stringList.add("stock: " + stock);

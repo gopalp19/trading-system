@@ -10,7 +10,7 @@ import java.util.*;
  */
 public final class SellMessage extends Message {
     Exchange sellerExchange = null;
-    Integer sellerID = null;
+    String sellerUserName = null;
     Stock stock = null;
     Integer quantity = null;
     LocalDateTime timeStamp = null;
@@ -25,15 +25,15 @@ public final class SellMessage extends Message {
     /**
      * Construct a SellMessage instance by specifying its parameters (possibly null).
      * @param sellerExchange home Exchange of seller
-     * @param sellerID identifying integer of seller
+     * @param sellerUserName identifying username of seller
      * @param stock Stock to be purchased
      * @param quantity number of stocks to be purchased
      * @param timeStamp LocalDateTime stamp of order
      * @param orderID String identifier of this order
      */
-    public SellMessage(Exchange sellerExchange, Integer sellerID, Stock stock, Integer quantity, LocalDateTime timeStamp, String orderID) {
+    public SellMessage(Exchange sellerExchange, String sellerUserName, Stock stock, Integer quantity, LocalDateTime timeStamp, String orderID) {
         this.sellerExchange = sellerExchange;
-        this.sellerID = sellerID;
+        this.sellerUserName = sellerUserName;
         this.stock = stock;
         this.quantity = quantity;
         this.timeStamp = timeStamp;
@@ -54,8 +54,8 @@ public final class SellMessage extends Message {
                 case "sellerExchange":
                     this.sellerExchange = Exchange.valueOf(value);
                     break;
-                case "sellerID":
-                    this.sellerID = Integer.parseInt(value);
+                case "sellerUserName":
+                    this.sellerUserName = value;
                     break;
                 case "stock":
                     this.stock = Stock.valueOf(value);
@@ -86,8 +86,8 @@ public final class SellMessage extends Message {
         if (sellerExchange != null) {
             stringList.add("sellerExchange: " + sellerExchange);
         }
-        if (sellerID != null) {
-            stringList.add("sellerID: " + sellerID);
+        if (sellerUserName != null) {
+            stringList.add("sellerUserName: " + sellerUserName);
         }
         if (stock != null) {
             stringList.add("stock: " + stock);

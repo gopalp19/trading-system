@@ -9,12 +9,12 @@ import java.util.*;
  * Created by Alan on 5/7/2017.
  */
 public final class BuyMessage extends Message {
-    Exchange buyerExchange = null;
-    String buyerUserName = null;
-    Stock stock = null;
-    Integer quantity = null;
-    LocalDateTime timeStamp = null;
-    String orderID = null;
+    public Exchange buyerExchange = null;
+    public String buyerUserName = null;
+    public Stock stock = null;
+    public Integer quantity = null;
+    public LocalDateTime timeStamp = null;
+    public String orderID = null;
 
     /**
      * Construct a BuyMessage instance with all fields set to null.

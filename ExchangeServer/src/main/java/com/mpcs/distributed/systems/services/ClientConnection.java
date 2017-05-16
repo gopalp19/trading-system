@@ -90,10 +90,7 @@ public class ClientConnection extends Thread{
             		} else {
             			continue;
             		}
-        			synchronized (ExchangeServer.clientReplier.messageQueue) {
-            			ExchangeServer.clientReplier.messageQueue.add(outMessage);   
-            			notifyAll();
-        			}
+        			ExchangeServer.clientReplier.messageQueue.add(outMessage);   
             	}           	
             }        		
         } catch (MalformedMessageException e) {

@@ -41,7 +41,6 @@ public class ClientConnection extends Thread{
         	if (splitted[0].equals("exchange")) {
         		// only time a peer contacts another peer directly is during election
         		try {
-        			Exchange exchange = Exchange.valueOf(splitted[1]);        			
         			outputStream.println("stop");
             		ElectionManager.handleElectionRequest();
             		return;

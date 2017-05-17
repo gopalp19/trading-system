@@ -1,6 +1,7 @@
 package superpeer;
 
 import messenger.*;
+import resourcesupport.*;
 import java.net.Socket;
 
 /*
@@ -12,6 +13,8 @@ public class SuperPeer extends Thread {
 	int port;
 	Socket left;
 	Socket right;
+	
+	// TODO - please have constructor of the form SuperPeer(Continent continent, ServerSocket serverSocket)
 
 	SuperPeer(String identifier, int port, Socket left, Socket right) {
 		this.identifier = identifier;

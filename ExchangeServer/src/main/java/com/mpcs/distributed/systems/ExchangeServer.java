@@ -3,6 +3,7 @@ package com.mpcs.distributed.systems;
 import resourcesupport.*;
 import java.io.IOException;
 import java.net.ServerSocket;
+import superpeer.SuperPeer;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +20,8 @@ import com.mpcs.distributed.systems.services.ClientConnection;
 
 @SpringBootApplication
 public class ExchangeServer extends SpringBootServletInitializer {
-	public static ClientReplier clientReplier = null;
+	public static SuperPeer superPeer = null;
+	public static ClientReplier clientReplier = new ClientReplier();
 	public static Exchange[] neighborPeers = null;
     public static Exchange exchange = null;
 

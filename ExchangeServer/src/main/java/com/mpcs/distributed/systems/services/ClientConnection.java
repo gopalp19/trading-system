@@ -1,5 +1,6 @@
 package com.mpcs.distributed.systems.services;
 
+import com.mpcs.distributed.systems.ElectionManager;
 import com.mpcs.distributed.systems.ExchangeServer;
 import java.util.*;
 import java.io.IOException;
@@ -8,6 +9,8 @@ import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import messenger.*;
+import resourcesupport.Exchange;
+
 import org.springframework.context.ApplicationContext;
 import com.mpcs.distributed.systems.application.AppContext;
 
@@ -37,9 +40,15 @@ public class ClientConnection extends Thread{
         	String[] splitted = clientsInput.split(":");
         	if (splitted[0].equals("exchange")) {
         		// only time a peer contacts another peer directly is during election
-        		// TODO - pass this socket to some election manager
-        		System.out.println("Exchange tried to connect. Doing nothing.");
-        		return;
+        		try {
+        			Exchange exchange = Exchange.valueOf(splitted[1]);        			
+        			outputStream.println("stop");
+            		ElectionManager.handleElectionRequest();
+            		return;
+        		} catch (IndexOutOfBoundsException | IllegalArgumentException | NullPointerException e) {
+                    System.out.println("Error: specified invalid exchange name. See resourcesupport.Exchange for list of valid names.");	
+                    return;
+        		}
         	} else if (!splitted[0].equals("client")) {
         		System.out.println("Error: expecting first message on socket to follow format: [client|exchange]:[userName|exchangeName]");
         		System.out.println("Received instead: " + clientsInput);

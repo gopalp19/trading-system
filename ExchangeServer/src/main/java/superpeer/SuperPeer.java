@@ -1,6 +1,7 @@
 package superpeer;
 
 import messenger.*;
+import resourcesupport.*;
 import java.net.Socket;
 
 /*
@@ -18,9 +19,9 @@ public class SuperPeer extends Thread {
 		MessageQueue toSendQueue = new MessageQueue();
 		MessageQueue toProcessQueue = new MessageQueue();
 
-		Receiver receiver = new Receiver(myExchange, toProcessQueue);
-		Sender sender = new Sender(myExchange, toSendQueue);
-		SuperPeerProcessor processor = new SuperPeerProcessor(toProcessQueue, toSendQueue);
+		SuperPeerReceiver receiver = new SuperPeerReceiver(myExchange, toProcessQueue);
+		SuperPeerSender sender = new SuperPeerSender(myExchange, toSendQueue);
+		SuperPeerProcessor processor = new SuperPeerProcessor(myExchange, toProcessQueue, toSendQueue);
 
 		receiver.start();
 		sender.start();

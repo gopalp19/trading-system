@@ -1,6 +1,7 @@
 package superpeer;
 
 import messenger.*;
+import resourcesupport.*;
 
 
 /*
@@ -12,7 +13,7 @@ import messenger.*;
 class SuperPeerProcessor extends Thread {
 	MessageQueue toProcessQueue;
 	MessageQueue toSendQueue;
-	Exchange localExchange;
+	resourcesupport.Exchange myExchange;
 
 	SuperPeerProcessor(Exchange myExchange, MessageQueue toProcessQueue, MessageQueue toSendQueue) {
 		this.toProcessQueue = toProcessQueue;

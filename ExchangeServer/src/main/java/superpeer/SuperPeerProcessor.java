@@ -12,16 +12,18 @@ import messenger.*;
 class SuperPeerProcessor extends Thread {
 	MessageQueue toProcessQueue;
 	MessageQueue toSendQueue;
+	Exchange localExchange;
 
-	SuperPeerProcessor(MessageQueue toProcessQueue, MessageQueue toSendQueue) {
+	SuperPeerProcessor(Exchange myExchange, MessageQueue toProcessQueue, MessageQueue toSendQueue) {
 		this.toProcessQueue = toProcessQueue;
 		this.toSendQueue = toSendQueue;
+		this.myExchange = myExchange;
 	}
 
 	public void run() {
 		while(true) {
 			Message next = toProcessQueue.take();
-			if (atDestination(next)
+			if (atDestination(next))
 				process(next);
 			else
 				forward(next);
@@ -31,11 +33,16 @@ class SuperPeerProcessor extends Thread {
 	// Process message if this is its destination
 	void process(Message next) {
 		next.print();
-		toSendQueue.add(next);
+		// TODO pass to local exchange
 	}
 
 	// Forward message towards it destination
+	// Sender will deal with specifics
 	void forward(Message next) {
-		
+		toSendQueue.add(next);
+	}
+
+	boolean atDestination(Message next) {
+		return myExchange == next.destination;
 	}
 }

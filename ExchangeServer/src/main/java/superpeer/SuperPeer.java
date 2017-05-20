@@ -9,16 +9,13 @@ import java.net.Socket;
 * Forwards orders, accepts new exchanges, 
 */
 public class SuperPeer extends Thread {
-<<<<<<< HEAD
 	String identifier;
 	int port;
 	Socket left;
 	Socket right;
 	
 	// TODO - please have constructor of the form SuperPeer(Continent continent, ServerSocket serverSocket)
-=======
 	private Exchange myExchange;
->>>>>>> origin/master
 
 	SuperPeer(Exchange myExchange) {
 		this.myExchange = myExchange;

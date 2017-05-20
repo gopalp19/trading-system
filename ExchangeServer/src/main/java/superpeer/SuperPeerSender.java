@@ -1,9 +1,10 @@
 
-package messenger;
+package superpeer;
 import java.util.List;
 import java.io.PrintWriter;
 import java.net.Socket;
 import resourcesupport.*;
+import messenger.*;
 
 // Class that sends messages from send queue to other peers
 public class SuperPeerSender extends Thread {
@@ -18,9 +19,9 @@ public class SuperPeerSender extends Thread {
 	public void run() {
 		while (true) {
 			Message next = toSendQueue.take();
-			int destinationPort = getNextHopPort(next.destination.continent());
+			int destinationPort = getNextHopPort(next.destination);
 			try (
-				Socket socket = new Socket(getIp(destination), destinationPort); 
+				Socket socket = new Socket(getIp(next.destination), destinationPort); 
 				PrintWriter out = new PrintWriter(socket.getOutputStream());
 				)
 			{
@@ -29,20 +30,29 @@ public class SuperPeerSender extends Thread {
 				for (String line : raw_message) {
 					out.println(line);
 				}
+				out.println();
 			}
 			catch (Exception e) {
-				System.out.println("Exception in SuperPeerSender run");
+				System.out.println("Exception in SuperPeerSender run:" + e.getMessage());
 			}
 		}
 	}
 
 	// TODO
-	Socket getIp(Exchange next) {
+	String getIp(Exchange next) {
 		return "128.135.164.171";
 	}
 
 	// Destination if super peer network is complete graph
-	int getNextHopPort(Continent destinationContinent) {
-		return destinationContinent.portNum();
+	int getNextHopPort(Exchange destinationExchange) {
+		// If managed by another super peer
+		if (destinationExchange.continent() != myExchange.continent())
+			return destinationExchange.continent().portNum();
+		// If managed by this super peer
+		else
+			return destinationExchange.portNum();
 	}
 }
+
+
+

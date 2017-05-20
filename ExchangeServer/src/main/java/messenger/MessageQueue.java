@@ -7,6 +7,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class MessageQueue {
 	private LinkedBlockingQueue<Message> queue;
 
+	public MessageQueue() {
+		queue = new LinkedBlockingQueue<Message>();
+	}
+
 	public Message take() 
 	{
 		while (true) {

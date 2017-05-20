@@ -44,6 +44,7 @@ class SuperPeerProcessor extends Thread {
 	}
 
 	boolean atDestination(Message next) {
+		// TODO add SuperPeer specific destination
 		return myExchange == next.destination;
 	}
 }

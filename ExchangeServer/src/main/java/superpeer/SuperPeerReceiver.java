@@ -1,4 +1,4 @@
-package messenger;
+package superpeer;
 
 /*
 	Class that accepts incoming messages from a given socket.
@@ -6,8 +6,10 @@ package messenger;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import resourcesupport.*;
+import messenger.*;
 
 public class SuperPeerReceiver extends Thread {
 	private Exchange myExchange;
@@ -26,7 +28,6 @@ public class SuperPeerReceiver extends Thread {
 
 	public void run() 
 	{
-		MessageBroker broker = new MessageBroker();
 		try (
 			ServerSocket superServer = new ServerSocket(myExchange.continent().portNum());
 			)
@@ -57,6 +58,7 @@ class SuperPeerReceiverConversation extends Thread {
 				BufferedReader in = new BufferedReader(new InputStreamReader(superClient.getInputStream()));
 			)
 		{
+			MessageBroker broker = new MessageBroker();
 			String line;
 			ArrayList<String> raw_message = new ArrayList<String>();
 			line = in.readLine();

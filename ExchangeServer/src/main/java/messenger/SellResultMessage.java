@@ -37,6 +37,7 @@ public final class SellResultMessage extends Message {
         this.quantitySold = quantitySold;
         this.totalPrice = totalPrice;
         this.orderID = orderID;
+        this.destination = sellerExchange;
     }
 
     /**

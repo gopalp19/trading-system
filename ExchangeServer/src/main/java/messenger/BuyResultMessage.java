@@ -34,6 +34,7 @@ public final class BuyResultMessage extends Message {
         this.quantityBought = quantityBought;
         this.totalPrice = totalPrice;
         this.orderID = orderID;
+        this.destination = buyerExchange;
     }
 
     /**

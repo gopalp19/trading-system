@@ -21,13 +21,21 @@ class SuperPeerProcessor extends Thread {
 	public void run() {
 		while(true) {
 			Message next = toProcessQueue.take();
-			process(next);
+			if (atDestination(next)
+				process(next);
+			else
+				forward(next);
 		}
 	}
 
-	// Process message
+	// Process message if this is its destination
 	void process(Message next) {
 		next.print();
 		toSendQueue.add(next);
+	}
+
+	// Forward message towards it destination
+	void forward(Message next) {
+		
 	}
 }

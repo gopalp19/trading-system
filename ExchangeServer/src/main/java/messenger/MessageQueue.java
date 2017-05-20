@@ -1,6 +1,5 @@
-package superpeer;
+package messenger;
 
-import messenger.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
 // Probably just a LinkedBlockingQueue

@@ -1,9 +1,8 @@
 
-package superpeer;
+package messenger;
 import java.util.List;
 import java.io.PrintWriter;
 import java.net.Socket;
-import messenger.*;
 
 // Class that sends messages from send queue to other peers
 public class Sender extends Thread {

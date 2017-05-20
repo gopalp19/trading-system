@@ -1,4 +1,4 @@
-package superpeer;
+package messenger;
 
 /*
 	Class that accepts incoming messages from a given socket.
@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.ArrayList;
-import messenger.*;
 
 public class Receiver extends Thread {
 	private Socket input;

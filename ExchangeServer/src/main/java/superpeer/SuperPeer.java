@@ -17,7 +17,7 @@ public class SuperPeer extends Thread {
 	// TODO - please have constructor of the form SuperPeer(Continent continent, ServerSocket serverSocket)
 	private Exchange myExchange;
 
-	SuperPeer(Exchange myExchange) {
+	public SuperPeer(Exchange myExchange) {
 		this.myExchange = myExchange;
 	}
 

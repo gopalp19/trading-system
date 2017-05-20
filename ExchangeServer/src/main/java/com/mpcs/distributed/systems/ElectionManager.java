@@ -41,9 +41,11 @@ public class ElectionManager {
 		// no higher ranking neighbors are alive; so try to create superpeer
 		try {
 			ServerSocket serverSocket = new ServerSocket(ExchangeServer.exchange.continent().portNum());
-			ExchangeServer.superPeer = new SuperPeer(ExchangeServer.exchange.continent(), serverSocket);			
+			ExchangeServer.superPeer = new SuperPeer(ExchangeServer.exchange);
+			ExchangeServer.superPeer.start();
 		} catch (Exception e) {
 			// could not create ServerSocket/superPeer. Probably because already exists.
+			ExchangeServer.superPeer = null;
 		}
 	}
 	

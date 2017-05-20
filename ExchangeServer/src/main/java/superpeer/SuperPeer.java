@@ -8,35 +8,26 @@ import java.net.Socket;
 * Forwards orders, accepts new exchanges, 
 */
 public class SuperPeer extends Thread {
-	String identifier;
-	int port;
-	Socket left;
-	Socket right;
+	private Exchange myExchange;
 
-	SuperPeer(String identifier, int port, Socket left, Socket right) {
-		this.identifier = identifier;
-		this.port = port;
-		this.left = left;
-		this.right = right;
+	SuperPeer(Exchange myExchange) {
+		this.myExchange = myExchange;
 	}
 
 	public void run() {
 		MessageQueue toSendQueue = new MessageQueue();
 		MessageQueue toProcessQueue = new MessageQueue();
 
-		Receiver leftReceiver = new Receiver(left, toProcessQueue);
-		Receiver rightReceiver = new Receiver(right, toProcessQueue);
-		Sender sender = new Sender(toSendQueue, left, right);
+		Receiver receiver = new Receiver(myExchange, toProcessQueue);
+		Sender sender = new Sender(myExchange, toSendQueue);
 		SuperPeerProcessor processor = new SuperPeerProcessor(toProcessQueue, toSendQueue);
 
-		leftReceiver.start();
-		rightReceiver.start();
+		receiver.start();
 		sender.start();
 		processor.start();
 
 		try {
-			leftReceiver.join();
-			rightReceiver.join();
+			receiver.join();
 			sender.join();
 			processor.join();
 		}

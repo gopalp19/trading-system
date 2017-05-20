@@ -26,8 +26,8 @@ public final class SellMessage extends Message {
      * Construct a SellMessage instance by specifying its parameters (possibly null).
      * @param sellerExchange home Exchange of seller
      * @param sellerUserName identifying username of seller
-     * @param stock Stock to be purchased
-     * @param quantity number of stocks to be purchased
+     * @param stock Stock to be sold
+     * @param quantity number of stocks to be sold
      * @param timeStamp LocalDateTime stamp of order
      * @param orderID String identifier of this order
      */
@@ -38,6 +38,7 @@ public final class SellMessage extends Message {
         this.quantity = quantity;
         this.timeStamp = timeStamp;
         this.orderID = orderID;
+        this.destination = stock.exchange();
     }
 
     /**

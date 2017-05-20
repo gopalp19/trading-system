@@ -38,6 +38,7 @@ public final class BuyMessage extends Message {
         this.quantity = quantity;
         this.timeStamp = timeStamp;
         this.orderID = orderID;
+        this.destination = stock.exchange();
     }
 
     /**

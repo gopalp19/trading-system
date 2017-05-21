@@ -1,7 +1,6 @@
 package com.mpcs.distributed.systems;
 
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.atomic.*;
@@ -40,7 +39,6 @@ public class ElectionManager {
 		}
 		// no higher ranking neighbors are alive; so try to create superpeer
 		try {
-			ServerSocket serverSocket = new ServerSocket(ExchangeServer.exchange.continent().portNum());
 			ExchangeServer.superPeer = new SuperPeer(ExchangeServer.exchange);
 			ExchangeServer.superPeer.start();
 		} catch (Exception e) {

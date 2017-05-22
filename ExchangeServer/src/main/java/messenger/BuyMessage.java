@@ -8,7 +8,7 @@ import java.util.*;
  * Message representing a BUY order.
  * Created by Alan on 5/7/2017.
  */
-public final class BuyMessage extends Message {
+public final class BuyMessage extends ExchangeMessage {
     public Exchange buyerExchange = null;
     public String buyerUserName = null;
     public Stock stock = null;
@@ -38,7 +38,6 @@ public final class BuyMessage extends Message {
         this.quantity = quantity;
         this.timeStamp = timeStamp;
         this.orderID = orderID;
-        this.destination = stock.exchange();
     }
 
     /**
@@ -104,4 +103,14 @@ public final class BuyMessage extends Message {
         }
         return stringList;
     }
+
+    /**
+     * Get the destination of the message.
+     * @return The Exchange where the stock is sold
+     */
+    @Override
+    public getDestination() {
+        return stock.exchange();
+    }
+
 }

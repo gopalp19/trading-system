@@ -7,7 +7,7 @@ import java.util.*;
  * Message representing a BUY result message.
  * Created by Alan on 5/7/2017.
  */
-public final class BuyResultMessage extends Message {
+public final class BuyResultMessage extends ExchangeMessage {
     public Exchange buyerExchange = null;
     public String buyerUserName = null;
     public Stock stock = null;
@@ -34,7 +34,6 @@ public final class BuyResultMessage extends Message {
         this.quantityBought = quantityBought;
         this.totalPrice = totalPrice;
         this.orderID = orderID;
-        this.destination = buyerExchange;
     }
 
     /**
@@ -99,5 +98,14 @@ public final class BuyResultMessage extends Message {
             stringList.add("orderID: " + orderID);
         }
         return stringList;
+    }
+
+    /**
+     * Get the destination of the message.
+     * @return The buyer's exchange
+     */
+    @Override
+    public getDestination() {
+        return buyerExchange;
     }
 }

@@ -44,7 +44,15 @@ class SuperPeerProcessor extends Thread {
 	}
 
 	boolean atDestination(Message next) {
-		// TODO add SuperPeer specific destination
-		return myExchange == next.destination;
+		if (next instanceof ExchangeMessage)
+			return false;
+		return ((SuperPeerMessage)(next)).getDestination() == myExchange.continent();
 	}
 }
+
+
+
+
+
+
+

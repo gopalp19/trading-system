@@ -19,9 +19,9 @@ public class SuperPeerSender extends Thread {
 	public void run() {
 		while (true) {
 			Message next = toSendQueue.take();
-			int destinationPort = getNextHopPort(next.destination);
+			int destinationPort = getNextHopPort(next);
 			try (
-				Socket socket = new Socket(getIp(next.destination), destinationPort); 
+				Socket socket = new Socket(getIp(next), destinationPort); 
 				PrintWriter out = new PrintWriter(socket.getOutputStream());
 				)
 			{
@@ -39,18 +39,33 @@ public class SuperPeerSender extends Thread {
 	}
 
 	// TODO
-	String getIp(Exchange next) {
-		return "128.135.164.171";
+	String getIp(Message next) {
+		return "localhosst";
 	}
 
 	// Destination if super peer network is complete graph
-	int getNextHopPort(Exchange destinationExchange) {
+	int getNextHopPort(Message next) {
+		if (next instanceof ExchangeMessage) {
+			Exchange destinationExchange = ((ExchangeMessage)next).getDestination();
+			return getExchangeNextPort(destinationExchange);
+		}
+		else {
+			Continent destinationContinent = ((SuperPeerMessage)next).getDestination();
+			return getContinentNextPort(destinationContinent);
+		}
+	}
+
+	int getExchangeNextPort(Exchange destinationExchange) {
 		// If managed by another super peer
 		if (destinationExchange.continent() != myExchange.continent())
 			return destinationExchange.continent().portNum();
 		// If managed by this super peer
 		else
 			return destinationExchange.portNum();
+	}
+
+	int getContinentNextPort(Continent destinationContinent) {
+		return destinationContinent.portNum();
 	}
 }
 

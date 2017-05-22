@@ -108,7 +108,7 @@ public final class SellResultMessage extends ExchangeMessage {
      * @return The seller's home exchange
      */
     @Override
-    public getDestination() {
+    public Exchange getDestination() {
         return sellerExchange;
     }
 }

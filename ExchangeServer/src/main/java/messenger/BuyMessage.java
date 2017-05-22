@@ -109,7 +109,7 @@ public final class BuyMessage extends ExchangeMessage {
      * @return The Exchange where the stock is sold
      */
     @Override
-    public getDestination() {
+    public Exchange getDestination() {
         return stock.exchange();
     }
 

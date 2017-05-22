@@ -105,7 +105,7 @@ public final class BuyResultMessage extends ExchangeMessage {
      * @return The buyer's exchange
      */
     @Override
-    public getDestination() {
+    public Exchange getDestination() {
         return buyerExchange;
     }
 }

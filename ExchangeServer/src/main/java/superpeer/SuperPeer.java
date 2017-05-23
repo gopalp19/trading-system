@@ -9,11 +9,6 @@ import java.net.Socket;
 * Forwards orders, accepts new exchanges, 
 */
 public class SuperPeer extends Thread {
-	String identifier;
-	int port;
-	Socket left;
-	Socket right;
-	
 	private Exchange myExchange;
 
 	public SuperPeer(Exchange myExchange) {

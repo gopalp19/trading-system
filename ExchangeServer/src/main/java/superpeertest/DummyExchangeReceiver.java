@@ -24,11 +24,13 @@ public class DummyExchangeReceiver extends Thread {
 		{
 			while (true) {
 				Socket client = server.accept();
-				log.add(readMessage(client));
+				synchronized (log) {
+					log.add(readMessage(client));
+				}
 			}
 		}
 		catch (Exception e) {
-			System.out.println("Exception in DummyExchangeRecevier run: " + e.getMessage());
+			System.out.println("Exception in DummyExchangeReceiver run: " + e.getMessage());
 		}
 	}
 
@@ -49,8 +51,18 @@ public class DummyExchangeReceiver extends Thread {
 			return (ExchangeMessage) broker.parse(raw_message);
 		}
 		catch (Exception e) {
-			System.out.println("Exception in DummyExchangeRecevier readMessage: " + e.getMessage());
+			System.out.println("Exception in DummyExchangeReceiver readMessage: " + e.getMessage());
 			return new BuyMessage();
+		}
+	}
+
+	void printLog() {
+		synchronized (log) {
+			System.out.println("Printing messages received by: " + myEx.textString);
+			for (ExchangeMessage msg : log) {
+				msg.print();
+				System.out.println();
+			}
 		}
 	}
 }

@@ -14,7 +14,6 @@ public class SuperPeer extends Thread {
 	Socket left;
 	Socket right;
 	
-	// TODO - please have constructor of the form SuperPeer(Continent continent, ServerSocket serverSocket)
 	private Exchange myExchange;
 
 	public SuperPeer(Exchange myExchange) {

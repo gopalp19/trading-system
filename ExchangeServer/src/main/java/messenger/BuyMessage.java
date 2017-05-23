@@ -96,7 +96,7 @@ public final class BuyMessage extends ExchangeMessage {
             stringList.add("quantity: " + quantity);
         }
         if (timeStamp != null) {
-            stringList.add("timestamp: " + timeStamp);
+            stringList.add("timeStamp: " + timeStamp);
         }
         if (orderID != null) {
             stringList.add("orderID: " + orderID);

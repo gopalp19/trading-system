@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import resourcesupport.*;
 import messenger.*;
+import java.util.ArrayList;
 
 // Class that sends messages from send queue to other peers
 public class SuperPeerSender extends Thread {
@@ -25,7 +26,7 @@ public class SuperPeerSender extends Thread {
 				PrintWriter out = new PrintWriter(socket.getOutputStream());
 				)
 			{
-				List<String> raw_message = next.toStringList();
+				ArrayList<String> raw_message = next.toStringList();
 
 				for (String line : raw_message) {
 					out.println(line);

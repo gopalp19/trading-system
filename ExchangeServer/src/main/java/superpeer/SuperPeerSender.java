@@ -40,7 +40,7 @@ public class SuperPeerSender extends Thread {
 
 	// TODO
 	String getIp(Message next) {
-		return "localhosst";
+		return "localhost";
 	}
 
 	// Destination if super peer network is complete graph

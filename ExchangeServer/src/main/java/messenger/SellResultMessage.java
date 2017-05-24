@@ -1,6 +1,8 @@
 package messenger;
 
 import resourcesupport.*;
+
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -14,6 +16,7 @@ public final class SellResultMessage extends ExchangeMessage {
 	public Integer quantitySold = null;
 	public Float totalPrice = null;
 	public String orderID = null;
+    public LocalDateTime timeStamp = null;
 
     /**
      * Construct a SellResultMessage instance with all fields set to null.
@@ -68,6 +71,9 @@ public final class SellResultMessage extends ExchangeMessage {
                 case "orderID":
                     this.orderID = value;
                     break;
+                case "timeStamp":
+                	this.timeStamp = LocalDateTime.parse(value);
+                	break;
                 default:
                     throw new InputMismatchException("SELL_RESULT header \"" + header + "\" not recognized");
             }
@@ -99,6 +105,9 @@ public final class SellResultMessage extends ExchangeMessage {
         }
         if (orderID != null) {
             stringList.add("orderID: " + orderID);
+        }
+        if (timeStamp != null) {
+        	stringList.add("timeStamp: " + timeStamp);
         }
         return stringList;
     }

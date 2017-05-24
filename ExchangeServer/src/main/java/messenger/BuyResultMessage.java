@@ -1,6 +1,8 @@
 package messenger;
 
 import resourcesupport.*;
+
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -14,6 +16,7 @@ public final class BuyResultMessage extends ExchangeMessage {
     public Integer quantityBought = null;
     public Float totalPrice = null;
     public String orderID = null;
+    public LocalDateTime timeStamp = null;
 
     public BuyResultMessage() {
     }
@@ -65,6 +68,9 @@ public final class BuyResultMessage extends ExchangeMessage {
                 case "orderID":
                     this.orderID = value;
                     break;
+                case "timeStamp":
+                	this.timeStamp = LocalDateTime.parse(value);
+                	break;
                 default:
                     throw new InputMismatchException("BUY_RESULT header \"" + header + "\" not recognized");
             }
@@ -96,6 +102,9 @@ public final class BuyResultMessage extends ExchangeMessage {
         }
         if (orderID != null) {
             stringList.add("orderID: " + orderID);
+        }
+        if (timeStamp != null) {
+        	stringList.add("timeStamp: " + timeStamp);
         }
         return stringList;
     }

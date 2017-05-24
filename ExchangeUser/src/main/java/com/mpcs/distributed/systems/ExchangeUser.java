@@ -26,14 +26,15 @@ public class ExchangeUser {
 	    PrintWriter out = new PrintWriter(s.getOutputStream(), true);
     	out.println("client:" + userName);
     	
-    	System.out.println("Enter input in format: <BUY|SELL>|<stock_name>|<quantity>");
+    	System.out.println("Enter input in format: <BUY|SELL> <stock_name> <quantity>");
     	Scanner userReader = new Scanner(System.in);
 	    while (userReader.hasNextLine()) {
 	    	String userLine = userReader.nextLine();
+	    	System.out.println(">>> Received user line: " + userLine);
 	    	if(userLine.equals("exit")) {
 	    		break;
 	    	}
-	    	String[] terms = userLine.split("|");
+	    	String[] terms = userLine.split("[\\s]+");
 	    	try {
 	    		Message m = null;
 	    		switch (terms[0].toLowerCase()) {
@@ -57,7 +58,7 @@ public class ExchangeUser {
 				System.out.println("See resourcesupport.Stock.java for list of valid stock names");
 	    	} catch (Exception e) {
 	    		System.out.println("Invalid line");
-	    		System.out.println("Expected input in format: <BUY|SELL>|<stock_name>|<quantity>");
+	    		System.out.println("Expected input in format: <BUY|SELL> <stock_name> <quantity>");
 	    	}
 	    }
 	    

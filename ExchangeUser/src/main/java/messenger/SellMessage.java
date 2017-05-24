@@ -8,7 +8,7 @@ import java.util.*;
  * Message representing a SELL order.
  * Created by Alan on 5/7/2017.
  */
-public final class SellMessage extends Message {
+public final class SellMessage extends ExchangeMessage {
     public Exchange sellerExchange = null;
     public String sellerUserName = null;
     public Stock stock = null;
@@ -26,8 +26,8 @@ public final class SellMessage extends Message {
      * Construct a SellMessage instance by specifying its parameters (possibly null).
      * @param sellerExchange home Exchange of seller
      * @param sellerUserName identifying username of seller
-     * @param stock Stock to be purchased
-     * @param quantity number of stocks to be purchased
+     * @param stock Stock to be sold
+     * @param quantity number of stocks to be sold
      * @param timeStamp LocalDateTime stamp of order
      * @param orderID String identifier of this order
      */
@@ -96,11 +96,20 @@ public final class SellMessage extends Message {
             stringList.add("quantity: " + quantity);
         }
         if (timeStamp != null) {
-            stringList.add("timestamp: " + timeStamp);
+            stringList.add("timeStamp: " + timeStamp);
         }
         if (orderID != null) {
             stringList.add("orderID: " + orderID);
         }
         return stringList;
+    }
+
+    /**
+     * Get the destination of the message.
+     * @return The Exchange where the stock is sold
+     */
+    @Override
+    public Exchange getDestination() {
+        return stock.exchange();
     }
 }

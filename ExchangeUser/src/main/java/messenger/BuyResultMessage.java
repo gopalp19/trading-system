@@ -1,19 +1,22 @@
 package messenger;
 
 import resourcesupport.*;
+
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
  * Message representing a BUY result message.
  * Created by Alan on 5/7/2017.
  */
-public final class BuyResultMessage extends Message {
+public final class BuyResultMessage extends ExchangeMessage {
     public Exchange buyerExchange = null;
     public String buyerUserName = null;
     public Stock stock = null;
     public Integer quantityBought = null;
     public Float totalPrice = null;
     public String orderID = null;
+    public LocalDateTime timeStamp = null;
 
     public BuyResultMessage() {
     }
@@ -65,6 +68,9 @@ public final class BuyResultMessage extends Message {
                 case "orderID":
                     this.orderID = value;
                     break;
+                case "timeStamp":
+                	this.timeStamp = LocalDateTime.parse(value);
+                	break;
                 default:
                     throw new InputMismatchException("BUY_RESULT header \"" + header + "\" not recognized");
             }
@@ -97,6 +103,18 @@ public final class BuyResultMessage extends Message {
         if (orderID != null) {
             stringList.add("orderID: " + orderID);
         }
+        if (timeStamp != null) {
+        	stringList.add("timeStamp: " + timeStamp);
+        }
         return stringList;
+    }
+
+    /**
+     * Get the destination of the message.
+     * @return The buyer's exchange
+     */
+    @Override
+    public Exchange getDestination() {
+        return buyerExchange;
     }
 }

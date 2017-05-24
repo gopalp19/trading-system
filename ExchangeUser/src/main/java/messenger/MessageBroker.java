@@ -26,6 +26,10 @@ public class MessageBroker {
                     return new BuyResultMessage(stringList);
                 case "SELL_RESULT":
                     return new SellResultMessage(stringList);
+                case "MUTUAL_BUY":
+                    return new MutualFundBuyMessage(stringList);
+                case "MUTUAL_RESULT":
+                    return new MutualFundResultMessage(stringList);
                 default:
                     throw new InputMismatchException("No valid message has type " + method);
             }

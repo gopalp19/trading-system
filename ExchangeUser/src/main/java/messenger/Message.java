@@ -1,6 +1,7 @@
 package messenger;
 
 import java.util.ArrayList;
+import resourcesupport.Exchange;
 
 /**
  *
@@ -17,4 +18,5 @@ public abstract class Message {
     		System.out.println(line);
     	}
     }
+
 }

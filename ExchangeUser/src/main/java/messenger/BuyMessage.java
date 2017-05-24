@@ -8,7 +8,7 @@ import java.util.*;
  * Message representing a BUY order.
  * Created by Alan on 5/7/2017.
  */
-public final class BuyMessage extends Message {
+public final class BuyMessage extends ExchangeMessage {
     public Exchange buyerExchange = null;
     public String buyerUserName = null;
     public Stock stock = null;
@@ -96,11 +96,21 @@ public final class BuyMessage extends Message {
             stringList.add("quantity: " + quantity);
         }
         if (timeStamp != null) {
-            stringList.add("timestamp: " + timeStamp);
+            stringList.add("timeStamp: " + timeStamp);
         }
         if (orderID != null) {
             stringList.add("orderID: " + orderID);
         }
         return stringList;
     }
+
+    /**
+     * Get the destination of the message.
+     * @return The Exchange where the stock is sold
+     */
+    @Override
+    public Exchange getDestination() {
+        return stock.exchange();
+    }
+
 }

@@ -18,11 +18,11 @@ public class SuperPeerTest {
 		parisRec.start();
 		Thread.sleep(1000);
 
-		BuyMessage lonMsg = new BuyMessage(Exchange.LONDON, "user0", Stock.BARCLAYS_PLC, 10, LocalDateTime.now(), "0");
-		SellMessage parisMsg = new SellMessage(Exchange.EURONEXT_PARIS, "user1", Stock.MICHELIN, 10, LocalDateTime.now(), "1");
+		MutualFundBuyMessage buyMsg = new MutualFundBuyMessage(Exchange.LONDON, "user0", MutualFund.BANKING, 20, LocalDateTime.now(), "0");
+		MutualFundResultMessage resultMsg = new MutualFundResultMessage(Exchange.LONDON, "user1", MutualFund.BANKING, 20, LocalDateTime.now(), "1");
 
-		londonSender.send(lonMsg);
-		londonSender.send(parisMsg);
+		londonSender.send(buyMsg);
+		londonSender.send(resultMsg);
 		Thread.sleep(1000);
 		londonRec.printLog();
 		parisRec.printLog();

@@ -9,12 +9,12 @@ import java.util.ArrayList;
 public class DummyExchangeReceiver extends Thread {
 	private Exchange myEx;
 	private int myPort;
-	private ArrayList<ExchangeMessage> log;
+	private ArrayList<Message> log;
 
 	public DummyExchangeReceiver(Exchange myEx) {
 		this.myEx = myEx;
 		myPort = myEx.portNum();
-		log = new ArrayList<ExchangeMessage>();
+		log = new ArrayList<Message>();
 	}
 
 	public void run() {
@@ -34,7 +34,7 @@ public class DummyExchangeReceiver extends Thread {
 		}
 	}
 
-	ExchangeMessage readMessage(Socket client) {
+	Message readMessage(Socket client) {
 		try (
 				BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			)
@@ -48,7 +48,7 @@ public class DummyExchangeReceiver extends Thread {
 				raw_message.add(line);
 				line = in.readLine();
 			}
-			return (ExchangeMessage) broker.parse(raw_message);
+			return broker.parse(raw_message);
 		}
 		catch (Exception e) {
 			System.out.println("Exception in DummyExchangeReceiver readMessage: " + e.getMessage());
@@ -59,7 +59,7 @@ public class DummyExchangeReceiver extends Thread {
 	void printLog() {
 		synchronized (log) {
 			System.out.println("Printing messages received by: " + myEx.textString);
-			for (ExchangeMessage msg : log) {
+			for (Message msg : log) {
 				msg.print();
 				System.out.println();
 			}

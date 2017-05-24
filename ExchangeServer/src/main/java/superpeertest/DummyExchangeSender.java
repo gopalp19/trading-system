@@ -15,7 +15,7 @@ public class DummyExchangeSender {
 		superPort = myEx.continent().portNum();
 	}
 
-	public void send(ExchangeMessage msg) {
+	public void send(Message msg) {
 		try (
 				Socket socket = new Socket("localhost", superPort);
 				PrintWriter out = new PrintWriter(socket.getOutputStream());

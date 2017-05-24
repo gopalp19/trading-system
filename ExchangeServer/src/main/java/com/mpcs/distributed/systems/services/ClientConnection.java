@@ -96,7 +96,7 @@ public class ClientConnection extends Thread{
             				System.out.println("Replied to client");
                 			ExchangeServer.clientReplier.messageQueue.add(br);               				
             			} else {
-            				ExchangeServer.senderToSuper.queue.add(br);
+            				ExchangeServer.senderToSuper.queue.add(b);
             				System.out.println("Forwarded to superpeer");
             			}
             		} else if (message.getClass() == SellMessage.class) {
@@ -113,7 +113,7 @@ public class ClientConnection extends Thread{
             				System.out.println("Replied to client");
                 			ExchangeServer.clientReplier.messageQueue.add(sr);               				
             			} else {
-            				ExchangeServer.senderToSuper.queue.add(sr);
+            				ExchangeServer.senderToSuper.queue.add(s);
             				System.out.println("Forwarded to superpeer");
             			}
             		} else {

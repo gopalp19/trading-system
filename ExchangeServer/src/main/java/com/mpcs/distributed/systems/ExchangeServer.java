@@ -41,12 +41,13 @@ public class ExchangeServer extends SpringBootServletInitializer {
 	}
 
 	public static void main(String[] args) {
-		String exchangeServerName = args[0];
+		String exchangeServerName = null;
         try {
+        	exchangeServerName = args[0];
         	exchange = Exchange.valueOf(exchangeServerName);
         	neighborPeers = exchange.neighbors();
         	senderToSuper = new SenderToSuper(exchange);
-        } catch (IllegalArgumentException | NullPointerException e) {
+        } catch (IllegalArgumentException | NullPointerException | ArrayIndexOutOfBoundsException e) {
             System.out.println("Error: specified invalid exchange name. See resourcesupport.Exchange for list of valid names.");
             System.exit(1);
         }

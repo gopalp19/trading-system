@@ -12,6 +12,7 @@ public class SuperPeer extends Thread {
 	private Exchange myExchange;
 
 	public SuperPeer(Exchange myExchange) {
+		System.out.println(myExchange + " acting as SuperPeer for " + myExchange.continent());
 		this.myExchange = myExchange;
 	}
 

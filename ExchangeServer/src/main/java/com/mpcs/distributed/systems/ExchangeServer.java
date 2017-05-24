@@ -20,6 +20,7 @@ import com.mpcs.distributed.systems.services.ClientConnection;
 
 @SpringBootApplication
 public class ExchangeServer extends SpringBootServletInitializer {
+	public static ExchangeTimer exchangeTimer = new ExchangeTimer();
 	public static SuperPeer superPeer = null;
 	public static ClientReplier clientReplier = new ClientReplier();
 	public static SenderToSuper senderToSuper;

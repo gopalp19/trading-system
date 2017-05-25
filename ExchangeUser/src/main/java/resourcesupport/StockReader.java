@@ -1,5 +1,6 @@
 package resourcesupport;
 
+// import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
@@ -104,4 +105,17 @@ public class StockReader {
         return LocalDateTime.parse(formattedDate + "T" + formattedTime);
     }
 
+    // public static void main(String[] args) {
+    //     Hashtable<Stock, ArrayList<PriceInstance>> list = getPrices(Exchange.NEW_YORK_STOCK_EXCHANGE);
+    //     Set<Stock> keySet = list.keySet();
+    //     Stock[] stocks = keySet.toArray(new Stock[keySet.size()]);
+    //     for (Stock stock : stocks) {
+    //         System.out.print(stock + ": ");
+    //         ArrayList<PriceInstance> al = list.get(stock);
+    //         for (int i = 0; i < 10; i++) {
+    //             System.out.print(al.get(i).price() + ", ");
+    //         }
+    //         System.out.println();
+    //     }
+    // }   
 }

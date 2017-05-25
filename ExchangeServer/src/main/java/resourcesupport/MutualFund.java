@@ -16,7 +16,7 @@ public enum MutualFund {
     int[] weights;
     int minimumBlock; // any number of mutual fund units that are transacted must be divisible by this number
 
-    MutualFund(Stock[] stocks, int[] weights, int minimumBlock, String textString) {
+    MutualFund(Stock[] stocks, int[] weights, int minimumBlock) {
         this.stocks = stocks;
         this.weights = weights;
         this.minimumBlock = minimumBlock;

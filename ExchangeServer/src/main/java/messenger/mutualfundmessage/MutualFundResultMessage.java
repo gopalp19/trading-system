@@ -1,30 +1,31 @@
-package messenger;
+package messenger.mutualfundmessage;
 
 import resourcesupport.*;
 import java.time.LocalDateTime;
 import java.util.*;
+import messenger.SuperPeerMessage;
 
 /**
  * Message representing a Mutual Fund order.
  * Only sent from Exchange to its corresponding SuperPeer
  * Created by Sam on 5/23/2017.
  */
-public final class MutualFundBuyMessage extends SuperPeerMessage {
+public final class MutualFundResultMessage extends SuperPeerMessage {
     public Exchange buyerExchange = null;
     public String buyerUserName = null;
     public MutualFund fund = null;
-    public Integer quantity = null;
+    public Integer quantityBought = null;
     public LocalDateTime timeStamp = null;
     public String orderID = null;
 
     /**
-     * Construct a MutualFundBuyMessage instance with all fields set to null.
+     * Construct a MutualFundResultMessage instance with all fields set to null.
      */
-    public MutualFundBuyMessage() {
+    public MutualFundResultMessage() {
     }
 
     /**
-     * Construct a MutualFundBuyMessage instance by specifying its parameters (possibly null).
+     * Construct a MutualFundResultMessage instance by specifying its parameters (possibly null).
      * @param buyerExchange home Exchange of buyer
      * @param buyerUserName identifying userName of buyer
      * @param fund Fund to be purchased
@@ -32,11 +33,11 @@ public final class MutualFundBuyMessage extends SuperPeerMessage {
      * @param timeStamp LocalDateTime stamp of order
      * @param orderID String identifier of this order
      */
-    public MutualFundBuyMessage(Exchange buyerExchange, String buyerUserName, MutualFund fund, Integer quantity, LocalDateTime timeStamp, String orderID) {
+    public MutualFundResultMessage(Exchange buyerExchange, String buyerUserName, MutualFund fund, Integer quantity, LocalDateTime timeStamp, String orderID) {
         this.buyerExchange = buyerExchange;
         this.buyerUserName = buyerUserName;
         this.fund = fund;
-        this.quantity = quantity;
+        this.quantityBought = quantity;
         this.timeStamp = timeStamp;
         this.orderID = orderID;
     }
@@ -45,9 +46,9 @@ public final class MutualFundBuyMessage extends SuperPeerMessage {
      * Construct a BuyMessage instance from a list of Strings.
      * @param stringList list of Strings to parse into a BuyMessage.
      */
-    public MutualFundBuyMessage(List<String> stringList) {
+    public MutualFundResultMessage(List<String> stringList) {
         for (String string : stringList) {
-            if (string.equals("MUTUAL_BUY")) continue;
+            if (string.equals("MUTUAL_RESULT")) continue;
             int divider = string.indexOf(":");
             String header = string.substring(0, divider).trim();
             String value = string.substring(divider+1).trim();
@@ -61,8 +62,8 @@ public final class MutualFundBuyMessage extends SuperPeerMessage {
                 case "fund":
                     this.fund = MutualFund.valueOf(value);
                     break;
-                case "quantity":
-                    this.quantity = Integer.parseInt(value);
+                case "quantityBought":
+                    this.quantityBought = Integer.parseInt(value);
                     break;
                 case "timeStamp":
                     this.timeStamp = LocalDateTime.parse(value);
@@ -71,7 +72,7 @@ public final class MutualFundBuyMessage extends SuperPeerMessage {
                     this.orderID = value;
                     break;
                 default:
-                    throw new InputMismatchException("MUTUAL_BUY header \"" + header + "\" not recognized");
+                    throw new InputMismatchException("MUTUAL_RESULT header \"" + header + "\" not recognized");
             }
         }
     }
@@ -83,7 +84,7 @@ public final class MutualFundBuyMessage extends SuperPeerMessage {
     @Override
     public ArrayList<String> toStringList() {
         ArrayList<String> stringList = new ArrayList<>();
-        stringList.add("MUTUAL_BUY");
+        stringList.add("MUTUAL_RESULT");
         if (buyerExchange != null) {
             stringList.add("buyerExchange: " + buyerExchange);
         }
@@ -91,10 +92,10 @@ public final class MutualFundBuyMessage extends SuperPeerMessage {
             stringList.add("buyerUserName: " + buyerUserName);
         }
         if (fund != null) {
-            stringList.add("fund: " + fund.textString);
+            stringList.add("fund: " + fund);
         }
-        if (quantity != null) {
-            stringList.add("quantity: " + quantity);
+        if (quantityBought != null) {
+            stringList.add("quantityBought: " + quantityBought);
         }
         if (timeStamp != null) {
             stringList.add("timeStamp: " + timeStamp);

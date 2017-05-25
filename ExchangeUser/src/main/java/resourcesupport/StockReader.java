@@ -97,8 +97,11 @@ public class StockReader {
         String formattedTime;
         try (Formatter formatter = new Formatter()) {
             formattedDate = formatter.format("%02d-%02d-%02d", yr, mo, day).toString();
-            formattedTime = formatter.format("%02d:%02d", hr, min).toString();        	
+        }
+        try (Formatter formatter = new Formatter()) {
+            formattedTime = formatter.format("%02d:%02d", hr, min).toString();          
         }
         return LocalDateTime.parse(formattedDate + "T" + formattedTime);
     }
+
 }

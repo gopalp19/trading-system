@@ -1,18 +1,26 @@
 package com.mpcs.distributed.systems.services;
 
-import com.mpcs.distributed.systems.ElectionManager;
-import com.mpcs.distributed.systems.ExchangeServer;
-import java.util.*;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import messenger.*;
-import resourcesupport.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.springframework.context.ApplicationContext;
+
+import com.mpcs.distributed.systems.ElectionManager;
+import com.mpcs.distributed.systems.ExchangeServer;
 import com.mpcs.distributed.systems.application.AppContext;
+
+import messenger.BuyMessage;
+import messenger.BuyResultMessage;
+import messenger.MalformedMessageException;
+import messenger.Message;
+import messenger.MessageBroker;
+import messenger.SellMessage;
+import messenger.SellResultMessage;
 
 public class ClientConnection extends Thread{
 	
@@ -20,6 +28,7 @@ public class ClientConnection extends Thread{
     private Socket clientSocket;
     private String userName;
     private UserService userService;
+    private StockService stockService;
 
     public ClientConnection(ServerSocket serverSocket) throws IOException{
 	    this.serverSocket = serverSocket;
@@ -27,6 +36,7 @@ public class ClientConnection extends Thread{
     	
     	ApplicationContext context = AppContext.getApplicationContext();
 		this.userService = (UserService) context.getBean("userService");
+		this.stockService = (StockService) context.getBean("stockService");
     }
     
 	public void run() {
@@ -93,6 +103,8 @@ public class ClientConnection extends Thread{
             			br.stock = b.stock;
             			br.timeStamp = ExchangeServer.exchangeTimer.getTime();
             			if (b.stock.exchange() == ExchangeServer.exchange) {
+                			stockService.buyStock(b, br);
+                			
             				System.out.println("Replied to client");
                 			ExchangeServer.clientReplier.messageQueue.add(br);               				
             			} else {

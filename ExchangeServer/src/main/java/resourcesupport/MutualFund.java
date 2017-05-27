@@ -12,9 +12,9 @@ public enum MutualFund {
     DIVERSIFIED(new Stock[] {Stock.SWIRE_PACIFIC_LIMITED, Stock.SOFTBANK_CORP_, Stock.SKY_PLC, Stock.DEUTSCHE_LUFTHANSA},
             new int[] {15, 35, 40, 10}, 20);
 
-    Stock[] stocks;
-    int[] weights;
-    int minimumBlock; // any number of mutual fund units that are transacted must be divisible by this number
+    public Stock[] stocks;
+    public int[] weights;
+    public int minimumBlock; // any number of mutual fund units that are transacted must be divisible by this number
 
     MutualFund(Stock[] stocks, int[] weights, int minimumBlock) {
         this.stocks = stocks;

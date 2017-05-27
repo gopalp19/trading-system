@@ -34,7 +34,8 @@ public class SuperPeerSender extends Thread {
 				out.println();
 			}
 			catch (Exception e) {
-				System.out.println("Exception in SuperPeerSender run:" + e.getMessage());
+				System.out.println("Message destined for port " + destinationPort 
+					+ " could not be sent.");
 			}
 		}
 	}

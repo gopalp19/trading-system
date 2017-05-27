@@ -40,7 +40,6 @@ public class SuperPeerSender extends Thread {
 		}
 	}
 
-	// TODO
 	String getIp(Message next) {
 		return "localhost";
 	}

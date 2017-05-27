@@ -37,12 +37,15 @@ public class SuperPeerTest {
 		// MutualFundResultMessage resultMsg = new MutualFundResultMessage(Exchange.LONDON, "user1", MutualFund.BANKING, 20, LocalDateTime.now(), "1");
 
 		// MutualFundReserveMessage rsvMsg = new MutualFundReserveMessage(Continent.EUROPE, Stock.BP_PLC, 20, LocalDateTime.now(), "0");
-		// MutualFundReserveResponseMessage resMsg = new MutualFundReserveResponseMessage(Continent.EUROPE, Stock.BP_PLC, 20, LocalDateTime.now(), "0", true);
+		// MutualFundReserveResponseMessage resMsg = new MutualFundReserveResponseMessage(Continent.EUROPE, Stock.DEUTSCHE_BANK, 20, LocalDateTime.now(), "0", true);
 		// MutualFundUpdateMessage updateMsg = new MutualFundUpdateMessage(Continent.EUROPE, Stock.BP_PLC, 20, LocalDateTime.now(), "0", true);
 
-
 		londonSender.send(buyMsg);
-		// londonSender.send(rsvMsg);
+		Thread.sleep(1000);
+
+		for (Stock stock : MutualFund.BANKING.stocks)
+			londonSender.send(new MutualFundReserveResponseMessage(Continent.EUROPE, stock, 20, LocalDateTime.now(), "0", true));
+
 		// londonSender.send(resMsg);
 		// londonSender.send(updateMsg);
 		// Thread.sleep(1000);

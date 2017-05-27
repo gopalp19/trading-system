@@ -3,14 +3,14 @@ package messenger.mutualfundmessage;
 import resourcesupport.*;
 import java.time.LocalDateTime;
 import java.util.*;
-import messenger.SuperPeerMessage;
+import messenger.ExchangeMessage;
 
 /**
- * Message representing a Mutual Fund order.
- * Only sent from Exchange to its corresponding SuperPeer
+ * Message representing a Mutual Fund order result.
+ * Only sent from SuperPeer to the local Exchange that placed the order
  * Created by Sam on 5/23/2017.
  */
-public final class MutualFundResultMessage extends SuperPeerMessage {
+public final class MutualFundResultMessage extends ExchangeMessage {
     public Exchange buyerExchange = null;
     public String buyerUserName = null;
     public MutualFund fund = null;
@@ -29,7 +29,7 @@ public final class MutualFundResultMessage extends SuperPeerMessage {
      * @param buyerExchange home Exchange of buyer
      * @param buyerUserName identifying userName of buyer
      * @param fund Fund to be purchased
-     * @param quantity number of units to be purchased
+     * @param quantity number of units purchased; 0 means failure
      * @param timeStamp LocalDateTime stamp of order
      * @param orderID String identifier of this order
      */
@@ -43,8 +43,8 @@ public final class MutualFundResultMessage extends SuperPeerMessage {
     }
 
     /**
-     * Construct a BuyMessage instance from a list of Strings.
-     * @param stringList list of Strings to parse into a BuyMessage.
+     * Construct a ResultMessage instance from a list of Strings.
+     * @param stringList list of Strings to parse into a ResultMessage.
      */
     public MutualFundResultMessage(List<String> stringList) {
         for (String string : stringList) {
@@ -78,7 +78,7 @@ public final class MutualFundResultMessage extends SuperPeerMessage {
     }
 
     /**
-     * Convert this BuyMessage instance to a list of Strings (without new-line terminators).
+     * Convert this ResultMessage instance to a list of Strings (without new-line terminators).
      * @return an ArrayList of strings representing the information in this message instance.
      */
     @Override
@@ -111,8 +111,8 @@ public final class MutualFundResultMessage extends SuperPeerMessage {
      * @return The Exchange where the stock is sold
      */
     @Override
-    public Continent getDestination() {
-        return buyerExchange.continent();
+    public Exchange getDestination() {
+        return buyerExchange;
     }
 
 }

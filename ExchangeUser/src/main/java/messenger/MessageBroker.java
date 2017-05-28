@@ -2,6 +2,7 @@ package messenger;
 
 import java.util.InputMismatchException;
 import java.util.List;
+import messenger.mutualfundmessage.*;
 
 /**
  * Class that parses strings into Messages, and Messages to strings.
@@ -30,6 +31,12 @@ public class MessageBroker {
                     return new MutualFundBuyMessage(stringList);
                 case "MUTUAL_RESULT":
                     return new MutualFundResultMessage(stringList);
+                case "MUTUAL_RESERVE":
+                    return new MutualFundReserveMessage(stringList);
+                case "MUTUAL_RESERVE_RESPONSE":
+                    return new MutualFundReserveResponseMessage(stringList);
+                case "MUTUAL_UPDATE":
+                    return new MutualFundUpdateMessage(stringList);
                 default:
                     throw new InputMismatchException("No valid message has type " + method);
             }

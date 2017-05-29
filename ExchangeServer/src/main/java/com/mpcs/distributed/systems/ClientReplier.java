@@ -1,7 +1,9 @@
 package com.mpcs.distributed.systems;
 
+import java.io.*;
 import messenger.*;
 import messenger.mutualfundmessage.MutualFundResultMessage;
+import resourcesupport.Exchange;
 
 import java.util.ArrayList;
 import java.util.concurrent.*;
@@ -14,11 +16,18 @@ import java.net.*;
  * @author Alan
  */
 public class ClientReplier implements Runnable {
+	public PrintWriter logger;
 	public MessageQueue messageQueue;
 	public ConcurrentHashMap<String, Socket> socketBank;
 	public Thread thread;	
 	
 	public ClientReplier() {
+		try {
+			logger = new PrintWriter(new File(ExchangeServer.exchange.toString() + "." + ".log"));			
+		} catch (IOException e) {
+			logger = null;
+			System.out.println("Error: IOException when trying to start a log file for " + ExchangeServer.exchange);
+		}
 		messageQueue = new MessageQueue();
 		socketBank = new ConcurrentHashMap<>();
 		thread = new Thread(this);
@@ -28,7 +37,6 @@ public class ClientReplier implements Runnable {
 	
 	public void run() {
 		while (true) {
-			// TODO - (1) parse message's destination client, (2) send message to appropriate client
 			Socket socket = null;
 			String name = null;
 			Message m = messageQueue.take();
@@ -61,14 +69,16 @@ public class ClientReplier implements Runnable {
 				PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
 				ArrayList<String> lines = m.toStringList();
 				for (String line : lines) {
+					if (logger != null) logger.println(line);
 					pw.println(line);
 				}
+				logger.println();
 				pw.println();
 			} catch (IOException e) {
 			    messageQueue.add(m);
 			    System.out.println("IOException when writing to client " + name);
 	            continue;
 	        }
-		}		
+		}
 	}
 }

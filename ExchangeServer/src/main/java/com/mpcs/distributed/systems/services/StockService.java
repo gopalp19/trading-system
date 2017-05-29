@@ -29,6 +29,7 @@ public class StockService {
     private StockQuantityRepository stockQuantityRepository;
 
 	public void buyStock(BuyMessage message, BuyResultMessage br) {
+		System.out.println("Inside stock service buyStock");
 		LocalDateTime test = LocalDateTime.of(2016, Month.JANUARY, 1, 9, 5);
 		LocalDateTime newTest =  test.truncatedTo(ChronoUnit.HOURS);
 		
@@ -64,6 +65,7 @@ public class StockService {
 	}
 
 	public void sellStock(SellMessage message, SellResultMessage sr) {
+		System.out.println("Inside stock service sellStock");
 		LocalDateTime test = LocalDateTime.of(2016, Month.JANUARY, 1, 9, 5);
 		LocalDateTime newTest =  test.truncatedTo(ChronoUnit.HOURS);
 		
@@ -99,6 +101,7 @@ public class StockService {
 	 * @return 0 if failed, else return quantity successfully reserved
 	 */
 	public int reserveStock(Stock stock, int quantity) {
+		System.out.println("Inside stock service reserveStock");
 		LocalDateTime test = LocalDateTime.of(2016, Month.JANUARY, 1, 9, 5);
 		LocalDateTime newTest =  test.truncatedTo(ChronoUnit.HOURS);
 
@@ -132,6 +135,7 @@ public class StockService {
 	 * unreserve some stock
 	 */
 	public void unreserveStock(Stock stock, int quantity) {
+		System.out.println("Inside stock service unreserveStock");
 		int old = getThreshold(stock);
 		thresholds.put(stock,  old - quantity);
 	}

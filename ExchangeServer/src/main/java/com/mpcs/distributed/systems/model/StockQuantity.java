@@ -1,5 +1,7 @@
 package com.mpcs.distributed.systems.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,13 +17,15 @@ public class StockQuantity {
     private String stockName;
     private String exchangeName;
     private int quantity;
+    private LocalDateTime ipoTime;
     
     protected StockQuantity(){}
     
-    public StockQuantity(String stockName, String exchangeName, int quantity){
+    public StockQuantity(String stockName, String exchangeName, int quantity, LocalDateTime ipoTime){
     	this.stockName = stockName;
     	this.exchangeName = exchangeName;
     	this.quantity = quantity;
+    	this.ipoTime = ipoTime;
     }
     
 	public Integer getId() {
@@ -50,5 +54,13 @@ public class StockQuantity {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public LocalDateTime getIpoTime() {
+		return ipoTime;
+	}
+
+	public void setIpoTime(LocalDateTime ipoTime) {
+		this.ipoTime = ipoTime;
 	}
 }

@@ -17,6 +17,7 @@ public final class BuyResultMessage extends ExchangeMessage {
     public Float totalPrice = null;
     public String orderID = null;
     public LocalDateTime timeStamp = null;
+    public String notificationMessage = null;
 
     public BuyResultMessage() {
     }
@@ -119,6 +120,9 @@ public final class BuyResultMessage extends ExchangeMessage {
         }
         if (timeStamp != null) {
         	stringList.add("timeStamp: " + timeStamp);
+        }
+        if (notificationMessage != null) {
+        	stringList.add("message: " + notificationMessage);
         }
         return stringList;
     }

@@ -24,7 +24,7 @@ class SuperPeerProcessor extends Thread {
 		this.toProcessQueue = toProcessQueue;
 		this.toSendQueue = toSendQueue;
 		this.myExchange = myExchange;
-		mutualManager = new MutualFundManager(toSendQueue);
+		mutualManager = new MutualFundManager(myExchange.continent(), toSendQueue);
 	}
 
 	public void run() {
@@ -68,9 +68,10 @@ class MutualFundManager {
 	MessageQueue toSendQueue;
 	Continent myContinent;
 
-	MutualFundManager(MessageQueue toSendQueue) {
+	MutualFundManager(Continent myContinent, MessageQueue toSendQueue) {
 		this.toSendQueue = toSendQueue;
 		orders = new Hashtable<String, MutualFundOrder>();
+		this.myContinent = myContinent;
 	}
 
 	void processOrder(MutualFundBuyMessage message) {
@@ -87,7 +88,6 @@ class MutualFundManager {
 	void processReserveResponse(MutualFundReserveResponseMessage message) {
 		MutualFundOrder order = orders.get(message.orderID);
 		if (null == order) {
-			System.err.println("orderID in ReserveResponse not recognized: " + message.orderID);
 			return;
 		}
 
@@ -123,7 +123,7 @@ class MutualFundManager {
 
 	void sendUpdates(String orderID, MutualFundOrder order, boolean doCommit) {
 		for (Stock stock : order.fund().stocks) {
-			toSendQueue.add(new MutualFundUpdateMessage(myContinent, stock, 0, LocalDateTime.now(), orderID, doCommit));
+			toSendQueue.add(new MutualFundUpdateMessage(myContinent, stock, LocalDateTime.now(), orderID, doCommit));
 		}
 	}
 }

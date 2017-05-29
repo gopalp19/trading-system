@@ -4,6 +4,7 @@ import resourcesupport.*;
 import java.time.LocalDateTime;
 import java.util.*;
 import messenger.ExchangeMessage;
+import messenger.mutualfundmessage.MutualFundBuyMessage;
 
 /**
  * Message representing a Mutual Fund order result.
@@ -76,6 +77,20 @@ public final class MutualFundResultMessage extends ExchangeMessage {
             }
         }
     }
+
+    /**
+     * Construct a failure MutualFundResultMessage from the original buy message
+     * @param buyMessage original buy message
+     */
+    public MutualFundResultMessage(MutualFundBuyMessage buyMessage) {
+        this.buyerExchange = buyMessage.buyerExchange;
+        this.buyerUserName = buyMessage.buyerUserName;
+        this.fund = buyMessage.fund;
+        this.quantityBought = 0;
+        this.timeStamp = LocalDateTime.now();
+        this.orderID = buyMessage.orderID;
+    }
+
 
     /**
      * Convert this ResultMessage instance to a list of Strings (without new-line terminators).

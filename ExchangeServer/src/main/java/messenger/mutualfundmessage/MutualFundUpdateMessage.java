@@ -15,7 +15,6 @@ import messenger.ExchangeMessage;
 public final class MutualFundUpdateMessage extends ExchangeMessage {
     public Continent superpeer = null;
     public Stock stock = null;
-    public Integer quantity = null;
     public LocalDateTime timeStamp = null;
     public String orderID = null;
     public Boolean doCommit = null;
@@ -35,10 +34,9 @@ public final class MutualFundUpdateMessage extends ExchangeMessage {
      * @param orderID String identifier of this order
      * @param doCommit Whether the exchange should commit (true) or release (false)
      */
-    public MutualFundUpdateMessage(Continent superpeer, Stock stock, Integer quantity, LocalDateTime timeStamp, String orderID, Boolean doCommit) {
+    public MutualFundUpdateMessage(Continent superpeer, Stock stock, LocalDateTime timeStamp, String orderID, Boolean doCommit) {
         this.superpeer = superpeer;
         this.stock = stock;
-        this.quantity = quantity;
         this.timeStamp = timeStamp;
         this.orderID = orderID;
         this.doCommit = doCommit;
@@ -60,9 +58,6 @@ public final class MutualFundUpdateMessage extends ExchangeMessage {
                     break;
                 case "stock":
                     this.stock = Stock.valueOf(value);
-                    break;
-                case "quantity":
-                    this.quantity = Integer.parseInt(value);
                     break;
                 case "timeStamp":
                     this.timeStamp = LocalDateTime.parse(value);
@@ -92,9 +87,6 @@ public final class MutualFundUpdateMessage extends ExchangeMessage {
         }
         if (stock != null) {
             stringList.add("stock: " + stock);
-        }
-        if (quantity != null) {
-            stringList.add("quantity: " + quantity);
         }
         if (timeStamp != null) {
             stringList.add("timeStamp: " + timeStamp);

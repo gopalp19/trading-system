@@ -1,6 +1,8 @@
 package com.mpcs.distributed.systems;
 
 import messenger.*;
+import messenger.mutualfundmessage.MutualFundResultMessage;
+
 import java.util.ArrayList;
 import java.util.concurrent.*;
 import java.io.IOException;
@@ -35,9 +37,15 @@ public class ClientReplier implements Runnable {
 					BuyResultMessage b = (BuyResultMessage) m;
 					name = b.buyerUserName;
 					socket = socketBank.get(name);
+					
 				} else if (m.getClass() == SellResultMessage.class) {
 					SellResultMessage s = (SellResultMessage) m;
 					name = s.sellerUserName;
+					socket = socketBank.get(name);
+					
+				} else if (m.getClass() == MutualFundResultMessage.class) {
+					MutualFundResultMessage mf = (MutualFundResultMessage) m;
+					name = mf.buyerUserName;
 					socket = socketBank.get(name);
 				}
 			} catch (NullPointerException e) {
@@ -55,6 +63,7 @@ public class ClientReplier implements Runnable {
 					pw.println(line);
 				}
 				pw.println();
+				socket.close();
 			} catch (IOException e) {
 			    messageQueue.add(m);
 			    System.out.println("IOException when writing to client " + name);

@@ -236,6 +236,9 @@ public class ClientConnection extends Thread{
         			} else {
         				System.out.println("Unreserved " + idToQty.get(m.orderID + m.stock) + " units of " + m.stock);
         			}
+        		} else if (message.getClass() == MutualFundResultMessage.class) {
+        			System.out.println("Replying to client about MF");
+        			ExchangeServer.clientReplier.messageQueue.add(message);
         			
         		} else {
         			continue;

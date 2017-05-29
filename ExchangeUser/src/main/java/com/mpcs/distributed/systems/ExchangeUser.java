@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import resourcesupport.*;
 import java.util.*;
 import messenger.*;
+import messenger.mutualfundmessage.MutualFundBuyMessage;
 
 public class ExchangeUser {
 	static Exchange exchange = null;
@@ -26,7 +27,7 @@ public class ExchangeUser {
 	    PrintWriter out = new PrintWriter(s.getOutputStream(), true);
     	out.println("client:" + userName);
     	
-    	System.out.println("Enter input in format: <BUY|SELL> <stock_name> <quantity>");
+    	System.out.println("Enter input in format: <BUY|SELL|MF> <stock_name> <quantity>");
     	Scanner userReader = new Scanner(System.in);
 	    while (userReader.hasNextLine()) {
 	    	String userLine = userReader.nextLine();
@@ -45,6 +46,10 @@ public class ExchangeUser {
 	    		    case "sell":
 	    		    	SellMessage sm = new SellMessage(exchange, userName, Stock.valueOf(terms[1]), Integer.parseInt(terms[2]), null, null);
 	    		    	m = (Message) sm;
+	    		    	break;
+	    		    case "mf":
+	    		    	MutualFundBuyMessage mfm = new MutualFundBuyMessage(exchange, userName, MutualFund.valueOf(terms[1]), Integer.parseInt(terms[2]), null, null);
+	    		    	m = (Message) mfm;
 	    		    	break;
 	    		    default:
 	    		    	System.out.println("Only know BUY and SELL commands, not " + terms[0]);

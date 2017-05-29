@@ -24,11 +24,11 @@ public class SuperPeerTest {
 		nySuper.start();
 		johanSuper.start();
 		hkSuper.start();
-		// londonRec.start();
-		// nyseRec.start();
-		// parisRec.start();
-		// frankfurtRec.start();
-		// tokyoRec.start();
+		londonRec.start();
+		nyseRec.start();
+		parisRec.start();
+		frankfurtRec.start();
+		tokyoRec.start();
 
 
 		Thread.sleep(1000);
@@ -51,11 +51,11 @@ public class SuperPeerTest {
 		// Thread.sleep(1000);
 		// londonSender.send(updateMsg);
 		// Thread.sleep(1000);
-		londonRec.printLog();
-		parisRec.printLog();
-		frankfurtRec.printLog();
-		tokyoRec.printLog();
-		nyseRec.printLog();
+		// londonRec.printLog();
+		// parisRec.printLog();
+		// frankfurtRec.printLog();
+		// tokyoRec.printLog();
+		// nyseRec.printLog();
 
 	}
 }

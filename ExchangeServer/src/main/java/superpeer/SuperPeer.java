@@ -20,22 +20,26 @@ public class SuperPeer extends Thread {
 		MessageQueue toSendQueue = new MessageQueue();
 		MessageQueue toProcessQueue = new MessageQueue();
 		MessageQueue exceptionQueue = new MessageQueue();
+		MessageQueue logQueue = new MessageQueue();
 
-		SuperPeerReceiver receiver = new SuperPeerReceiver(myExchange, toProcessQueue);
-		SuperPeerSender sender = new SuperPeerSender(myExchange, toSendQueue, exceptionQueue);
+		SuperPeerReceiver receiver = new SuperPeerReceiver(myExchange, toProcessQueue, logQueue);
+		SuperPeerSender sender = new SuperPeerSender(myExchange, toSendQueue, exceptionQueue, logQueue);
 		SuperPeerProcessor processor = new SuperPeerProcessor(myExchange, toProcessQueue, toSendQueue);
 		SuperPeerExceptionHandler handler = new SuperPeerExceptionHandler(exceptionQueue, toProcessQueue);
+		SuperPeerLogger logger = new SuperPeerLogger(myExchange.continent(), logQueue, "Logs/");
 
-		receiver.start();
+		logger.start();
+		handler.start();
 		sender.start();
 		processor.start();
-		handler.start();
-
+		receiver.start();
+		
 		try {
 			receiver.join();
 			sender.join();
 			processor.join();
 			handler.join();
+			logger.join();
 		}
 		catch (InterruptedException e) {
 			System.err.println("Exception in SuperPeer: " + e.getMessage());

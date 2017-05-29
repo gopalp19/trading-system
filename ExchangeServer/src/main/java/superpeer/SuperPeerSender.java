@@ -11,12 +11,14 @@ import java.util.ArrayList;
 public class SuperPeerSender extends Thread {
 	private MessageQueue toSendQueue;
 	private MessageQueue exceptionQueue;
+	private MessageQueue logQueue;
 	private Exchange myExchange;
 
-	SuperPeerSender(Exchange myExchange, MessageQueue toSendQueue, MessageQueue exceptionQueue) {
+	SuperPeerSender(Exchange myExchange, MessageQueue toSendQueue, MessageQueue exceptionQueue, MessageQueue logQueue) {
 		this.toSendQueue = toSendQueue;
 		this.myExchange = myExchange;
 		this.exceptionQueue = exceptionQueue;
+		this.logQueue = logQueue;
 	}
 
 	public void run() {
@@ -38,6 +40,8 @@ public class SuperPeerSender extends Thread {
 			catch (Exception e) {
 				exceptionQueue.add(next);
 			}
+			// Log that message was sent
+			logQueue.add(next);
 		}
 	}
 

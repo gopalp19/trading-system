@@ -84,7 +84,8 @@ public class ExchangeUser {
 		} catch (Exception e) {
 			System.out.println("Process started with invalid arguments.");
 			System.out.println("Expected process start with format: java ExchangeUser <exchangeName> <userName>");
-			System.out.println("See resourcesupport.Exchange.java for lsit of valid exchangeNames");
+			System.out.println("See resourcesupport.Exchange.java for list of valid exchangeNames");
+			return false;
 		}
 		return true;
 	}

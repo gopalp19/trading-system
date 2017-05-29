@@ -57,13 +57,13 @@ public class ClientReplier implements Runnable {
 				messageQueue.add(m);
 				continue;
 			}
-			try (PrintWriter pw = new PrintWriter(socket.getOutputStream())) {
+			try {
+				PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
 				ArrayList<String> lines = m.toStringList();
 				for (String line : lines) {
 					pw.println(line);
 				}
 				pw.println();
-				socket.close();
 			} catch (IOException e) {
 			    messageQueue.add(m);
 			    System.out.println("IOException when writing to client " + name);

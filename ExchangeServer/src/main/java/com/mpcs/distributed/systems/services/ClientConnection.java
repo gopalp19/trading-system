@@ -137,7 +137,8 @@ public class ClientConnection extends Thread{
             			continue;
             		}
             	}           	
-            }        		
+            }
+            System.out.println("InputStream out of lines");
         } catch (MalformedMessageException e) {
         	System.out.println("Malformed message from client");
         } catch (IOException e) {

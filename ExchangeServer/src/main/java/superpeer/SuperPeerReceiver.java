@@ -14,16 +14,19 @@ import messenger.*;
 public class SuperPeerReceiver extends Thread {
 	private Exchange myExchange;
 	private ArrayList<MessageQueue> acceptingQueues;
+	private MessageQueue logQueue;
 
-	SuperPeerReceiver(Exchange myExchange, ArrayList<MessageQueue> acceptingQueues_) {
+	SuperPeerReceiver(Exchange myExchange, ArrayList<MessageQueue> acceptingQueues_, MessageQueue logQueue) {
 		this.myExchange = myExchange;
 		acceptingQueues = acceptingQueues_;
+		this.logQueue = logQueue;
 	}
 
-	SuperPeerReceiver(Exchange myExchange, MessageQueue acceptingQueue) {
+	SuperPeerReceiver(Exchange myExchange, MessageQueue acceptingQueue, MessageQueue logQueue) {
 		this.myExchange = myExchange;
 		acceptingQueues = new ArrayList<MessageQueue>();
 		acceptingQueues.add(acceptingQueue);
+		this.logQueue = logQueue;
 	}
 
 	public void run() 
@@ -34,7 +37,7 @@ public class SuperPeerReceiver extends Thread {
 		{
 			while (true) {
 				Socket superClient = superServer.accept();
-				new SuperPeerReceiverConversation(superClient, acceptingQueues).start();
+				new SuperPeerReceiverConversation(superClient, acceptingQueues, logQueue).start();
 			}
 
 		}
@@ -47,10 +50,12 @@ public class SuperPeerReceiver extends Thread {
 class SuperPeerReceiverConversation extends Thread {
 	private Socket superClient;
 	private ArrayList<MessageQueue> acceptingQueues;
+	private MessageQueue logQueue;
 
-	SuperPeerReceiverConversation(Socket superClient, ArrayList<MessageQueue> acceptingQueues) {
+	SuperPeerReceiverConversation(Socket superClient, ArrayList<MessageQueue> acceptingQueues, MessageQueue logQueue) {
 		this.superClient = superClient;
 		this.acceptingQueues = acceptingQueues;
+		this.logQueue = logQueue;
 	}
 
 	public void run() {
@@ -76,6 +81,7 @@ class SuperPeerReceiverConversation extends Thread {
 	}
 
 	void passMessage(Message full_message) {
+		logQueue.add(full_message);
 		for (MessageQueue queue : acceptingQueues) {
 			queue.add(full_message);
 		}

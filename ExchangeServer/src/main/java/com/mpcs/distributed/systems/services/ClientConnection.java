@@ -95,7 +95,8 @@ public class ClientConnection extends Thread{
                 	//processCommand(clientsInput);
             		if (message.getClass() == BuyMessage.class) {
             			BuyMessage b = (BuyMessage) message;
-               			b.timeStamp = ExchangeServer.exchangeTimer.getTime();                			
+               			b.timeStamp = ExchangeServer.exchangeTimer.getTime();
+               			b.orderID = System.currentTimeMillis() + ":" + userName;
                		 	if (b.stock.exchange() == ExchangeServer.exchange) {
                 			BuyResultMessage br = new BuyResultMessage();
                 			br.buyerUserName = b.buyerUserName;
@@ -114,6 +115,7 @@ public class ClientConnection extends Thread{
                         // temporarily auto-confirm any local sell request with 0 sold
             			SellMessage s = (SellMessage) message;
             			s.timeStamp = ExchangeServer.exchangeTimer.getTime();
+               			s.orderID = System.currentTimeMillis() + ":" + userName;
             			if (s.stock.exchange() == ExchangeServer.exchange) {
                 			SellResultMessage sr = new SellResultMessage();
                 			sr.sellerUserName = s.sellerUserName;
@@ -131,6 +133,7 @@ public class ClientConnection extends Thread{
             		} else if (message.getClass() == MutualFundBuyMessage.class) {
             			MutualFundBuyMessage m = (MutualFundBuyMessage) message;
             			m.timeStamp = ExchangeServer.exchangeTimer.getTime();
+               			m.orderID = System.currentTimeMillis() + ":" + userName;
            				ExchangeServer.senderToSuper.queue.add(m);
          				System.out.println("Forwarded to superpeer");
             		} else {

@@ -33,6 +33,9 @@ public class StockService {
 		LocalDateTime test = LocalDateTime.of(2016, Month.JANUARY, 1, 9, 5);
 		LocalDateTime newTest =  test.truncatedTo(ChronoUnit.HOURS);
 		
+		//LocalDateTime currentExchangeTime =  ExchangeServer.exchangeTimer.getTime().truncatedTo(ChronoUnit.HOURS);
+		LocalDateTime currentExchangeTime = newTest;
+		
 		List<StockPrice> stockPrices = stockPriceRepository.findByStockNameAndExchangeNameAndSystemDateTime(message.stock.toString(), ExchangeServer.exchange.toString(), newTest);
 		
 		if(stockPrices.isEmpty()){
@@ -44,7 +47,13 @@ public class StockService {
 			if(!stockQuantityList.isEmpty()){
 
 				StockQuantity stockQuantity = stockQuantityList.get(0);
-				StockPrice stockPrice= stockPrices.get(0);
+				StockPrice stockPrice = stockPrices.get(0);
+				
+				if(stockQuantity.getIpoTime().isAfter(currentExchangeTime)){
+					//IPO has not started and stocks do not exist
+					br.notificationMessage = "IPO has not started, no stock exists!";
+					return;
+				}
 				
 				//Make sure amount of stocks in db is greater than how many user wants
 				if(stockQuantity.getQuantity() - getThreshold(message.stock) >= message.quantity){
@@ -57,6 +66,9 @@ public class StockService {
         			br.totalPrice = stockPrice.getPrice() * message.quantity;
 					
 					//Return success, user bough stocks
+				}else{
+					//Quantity too large...give error message
+					br.notificationMessage = "Quantity demanded is greater than current stock supply!";
 				}
 			}else{
 				//Stock is not found in quantities table...this should never happen at this point

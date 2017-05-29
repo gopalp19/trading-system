@@ -7,25 +7,37 @@ import java.time.LocalDateTime;
  * Created by Alan on 4/27/2017.
  */
 public class IPO {
-    private final Stock stock;
-    private  final LocalDateTime startTime;
-    private final int quantity;
+    private Stock stock;
+    private LocalDateTime startTime;
+    private int quantity;
 
     IPO(Stock stock, LocalDateTime startTime, int quantity) {
-        this.stock = stock;
-        this.startTime = startTime;
-        this.quantity = quantity;
+        this.setStock(stock);
+        this.setStartTime(startTime);
+        this.setQuantity(quantity);
     }
 
-    public Stock stock() {
-        return stock;
-    }
+	public Stock getStock() {
+		return stock;
+	}
 
-    public LocalDateTime startTime() {
-        return startTime;
-    }
+	public void setStock(Stock stock) {
+		this.stock = stock;
+	}
 
-    public int quantity() {
-        return quantity;
-    }
+	public LocalDateTime getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(LocalDateTime startTime) {
+		this.startTime = startTime;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 }

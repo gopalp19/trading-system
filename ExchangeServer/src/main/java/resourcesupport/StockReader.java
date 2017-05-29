@@ -72,6 +72,11 @@ public class StockReader {
         Stock[] stockArray = Stock.values();
         String line = "";
         int count = 0;
+        
+        for (Integer i : indices) {
+        	IPO ipo = new IPO(stockArray[i], null, 0);
+            quantities.put(stockArray[i], ipo);
+        }
 
         try (BufferedReader br = new BufferedReader(new FileReader(QUANTITY_PATH))) {
             while ((line = br.readLine()) != null) {
@@ -80,21 +85,19 @@ public class StockReader {
                 	continue;
                 }
                 
-                //Just read first line of stock quantities 
-                if(count == 1){
+                //Just read first 30 lines of stock quantities 
+                if(count > 2000){
                 	break;
                 }
                 
                 count++;
                 LocalDateTime time = getTime(terms[0], terms[1]);
                 for (Integer i : indices) {
-                	IPO ipo;
+
                     if (!terms[i + OFFSET_COLUMNS].isEmpty()) {
-                        ipo = new IPO(stockArray[i], time, Integer.parseInt(terms[i + OFFSET_COLUMNS]));
-                    }else{
-                        ipo = new IPO(stockArray[i], time, 0);
+                    	quantities.get(stockArray[i]).setQuantity(Integer.parseInt(terms[i + OFFSET_COLUMNS]));
+                    	quantities.get(stockArray[i]).setStartTime(time);
                     }
-                    quantities.put(stockArray[i], ipo);
                 }
             }
         } catch (NumberFormatException | IOException e) {

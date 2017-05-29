@@ -79,6 +79,20 @@ public final class MutualFundReserveResponseMessage extends SuperPeerMessage {
     }
 
     /**
+     * Construct a failure MutualFundReserveResponseMessage from the original reserve message
+     * @param reserveMessage the original reserve message
+     */
+    public MutualFundReserveResponseMessage(MutualFundReserveMessage reserveMessage) 
+    {
+        this.superpeer = reserveMessage.superpeer;
+        this.stock = reserveMessage.stock;
+        this.quantity = 0;
+        this.timeStamp = reserveMessage.timeStamp;
+        this.orderID = reserveMessage.orderID;
+        this.reservationConfirmed = false;
+    }
+
+    /**
      * Convert this MutualFundReserveResponseMessage instance to a list of Strings (without new-line terminators).
      * @return an ArrayList of strings representing the information in this message instance.
      */

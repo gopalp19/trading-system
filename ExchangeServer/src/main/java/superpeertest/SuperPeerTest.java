@@ -24,11 +24,11 @@ public class SuperPeerTest {
 		nySuper.start();
 		johanSuper.start();
 		hkSuper.start();
-		londonRec.start();
-		nyseRec.start();
-		parisRec.start();
-		frankfurtRec.start();
-		tokyoRec.start();
+		// londonRec.start();
+		// nyseRec.start();
+		// parisRec.start();
+		// frankfurtRec.start();
+		// tokyoRec.start();
 
 
 		Thread.sleep(1000);
@@ -43,14 +43,14 @@ public class SuperPeerTest {
 		londonSender.send(buyMsg);
 		Thread.sleep(1000);
 
-		for (Stock stock : MutualFund.BANKING.stocks)
-			londonSender.send(new MutualFundReserveResponseMessage(Continent.EUROPE, stock, 20, LocalDateTime.now(), "0", true));
+		// for (Stock stock : MutualFund.BANKING.stocks)
+		// 	londonSender.send(new MutualFundReserveResponseMessage(Continent.EUROPE, stock, 20, LocalDateTime.now(), "0", false));
 
 		// londonSender.send(resMsg);
 		// londonSender.send(updateMsg);
 		// Thread.sleep(1000);
 		// londonSender.send(updateMsg);
-		Thread.sleep(1000);
+		// Thread.sleep(1000);
 		londonRec.printLog();
 		parisRec.printLog();
 		frankfurtRec.printLog();

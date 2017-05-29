@@ -80,6 +80,20 @@ public final class SellResultMessage extends ExchangeMessage {
         }
     }
 
+        /**
+     * Construct a failure SellResultMessage from the corresponding SellMessage
+     * @param request The original BuyMessage
+     */
+    public SellResultMessage(SellMessage request) {
+        this.sellerExchange = request.sellerExchange;
+        this.sellerUserName = request.sellerUserName;
+        this.stock = request.stock;
+        this.quantitySold = 0;
+        this.totalPrice = (float) 0;
+        this.timeStamp = LocalDateTime.now();
+        this.orderID = request.orderID;
+    }
+
     /**
      * Convert this SellResultMessage into a list of Strings (without new-line terminators).
      * @return an ArrayList of Strings representing the information in this message instance.

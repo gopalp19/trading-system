@@ -10,11 +10,13 @@ import java.util.ArrayList;
 // Class that sends messages from send queue to other peers
 public class SuperPeerSender extends Thread {
 	private MessageQueue toSendQueue;
+	private MessageQueue exceptionQueue;
 	private Exchange myExchange;
 
-	SuperPeerSender(Exchange myExchange, MessageQueue toSendQueue) {
+	SuperPeerSender(Exchange myExchange, MessageQueue toSendQueue, MessageQueue exceptionQueue) {
 		this.toSendQueue = toSendQueue;
 		this.myExchange = myExchange;
+		this.exceptionQueue = exceptionQueue;
 	}
 
 	public void run() {
@@ -34,8 +36,7 @@ public class SuperPeerSender extends Thread {
 				out.println();
 			}
 			catch (Exception e) {
-				System.out.println("Message destined for port " + destinationPort 
-					+ " could not be sent.");
+				exceptionQueue.add(next);
 			}
 		}
 	}
@@ -51,7 +52,12 @@ public class SuperPeerSender extends Thread {
 			return getExchangeNextPort(destinationExchange);
 		}
 		else {
-			Continent destinationContinent = ((SuperPeerMessage)next).getDestination();
+			Continent destinationContinent = ((SuperPeerMessage) next).getDestination();
+			if (destinationContinent == null) {
+				System.out.println("no destination?");
+				next.print();
+			}
+
 			return getContinentNextPort(destinationContinent);
 		}
 	}

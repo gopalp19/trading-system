@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,13 +15,10 @@ import com.mpcs.distributed.systems.ElectionManager;
 import com.mpcs.distributed.systems.ExchangeServer;
 import com.mpcs.distributed.systems.application.AppContext;
 
-import messenger.BuyMessage;
-import messenger.BuyResultMessage;
-import messenger.MalformedMessageException;
-import messenger.Message;
-import messenger.MessageBroker;
-import messenger.SellMessage;
-import messenger.SellResultMessage;
+import messenger.*;
+import messenger.mutualfundmessage.*;
+import resourcesupport.Continent;
+import resourcesupport.Stock;
 
 public class ClientConnection extends Thread{
 	
@@ -93,18 +91,16 @@ public class ClientConnection extends Thread{
             		stringList = new ArrayList<>();
                 	//processCommand(clientsInput);
             		if (message.getClass() == BuyMessage.class) {
-            			// TODO - do buy request
-                        // temporarily auto-reply any local buy request with 0 bought
             			BuyMessage b = (BuyMessage) message;
-            			BuyResultMessage br = new BuyResultMessage();
-            			br.buyerUserName = b.buyerUserName;
-            			br.buyerExchange = b.buyerExchange;
-            			br.quantityBought = 0;
-            			br.stock = b.stock;
-            			br.timeStamp = ExchangeServer.exchangeTimer.getTime();
-            			if (b.stock.exchange() == ExchangeServer.exchange) {
+               			b.timeStamp = ExchangeServer.exchangeTimer.getTime();                			
+               		 	if (b.stock.exchange() == ExchangeServer.exchange) {
+                			BuyResultMessage br = new BuyResultMessage();
+                			br.buyerUserName = b.buyerUserName;
+                			br.buyerExchange = b.buyerExchange;
+                			br.quantityBought = 0;
+                			br.stock = b.stock;
+                			br.timeStamp = b.timeStamp;                			
                 			stockService.buyStock(b, br);
-                			
             				System.out.println("Replied to client");
                 			ExchangeServer.clientReplier.messageQueue.add(br);               				
             			} else {
@@ -112,22 +108,28 @@ public class ClientConnection extends Thread{
             				System.out.println("Forwarded to superpeer");
             			}
             		} else if (message.getClass() == SellMessage.class) {
-            			// TODO - do sell request
                         // temporarily auto-confirm any local sell request with 0 sold
             			SellMessage s = (SellMessage) message;
-            			SellResultMessage sr = new SellResultMessage();
-            			sr.sellerUserName = s.sellerUserName;
-            			sr.sellerExchange = s.sellerExchange;
-            			sr.quantitySold = 0;
-            			sr.stock = s.stock;
-            			sr.timeStamp = ExchangeServer.exchangeTimer.getTime();
+            			s.timeStamp = ExchangeServer.exchangeTimer.getTime();
             			if (s.stock.exchange() == ExchangeServer.exchange) {
+                			SellResultMessage sr = new SellResultMessage();
+                			sr.sellerUserName = s.sellerUserName;
+                			sr.sellerExchange = s.sellerExchange;
+                			sr.quantitySold = 0;
+                			sr.stock = s.stock;
+                			sr.timeStamp = s.timeStamp;
+                			stockService.sellStock(s, sr);
             				System.out.println("Replied to client");
                 			ExchangeServer.clientReplier.messageQueue.add(sr);               				
             			} else {
             				ExchangeServer.senderToSuper.queue.add(s);
             				System.out.println("Forwarded to superpeer");
             			}
+            		} else if (message.getClass() == MutualFundBuyMessage.class) {
+            			MutualFundBuyMessage m = (MutualFundBuyMessage) message;
+            			m.timeStamp = ExchangeServer.exchangeTimer.getTime();
+           				ExchangeServer.senderToSuper.queue.add(m);
+         				System.out.println("Forwarded to superpeer");
             		} else {
             			continue;
             		}
@@ -171,8 +173,6 @@ public class ClientConnection extends Thread{
         		stringList = new ArrayList<>();
             	//processCommand(clientsInput);
         		if (message.getClass() == BuyMessage.class) {
-        			// TODO - do buy request
-                    // temporarily auto-reply any local buy request with 0 bought
         			BuyMessage b = (BuyMessage) message;
         			BuyResultMessage br = new BuyResultMessage();
         			br.buyerUserName = b.buyerUserName;
@@ -181,11 +181,11 @@ public class ClientConnection extends Thread{
         			br.stock = b.stock;
         			ExchangeServer.exchangeTimer.update(b.timeStamp);
         			br.timeStamp = ExchangeServer.exchangeTimer.getTime();
+        			stockService.buyStock(b, br);
     				ExchangeServer.senderToSuper.queue.add(br);
     				System.out.println("Forwarded to superpeer");
+    				
         		} else if (message.getClass() == SellMessage.class) {
-        			// TODO - do sell request
-                    // temporarily auto-confirm any local sell request with 0 sold
         			SellMessage s = (SellMessage) message;
         			SellResultMessage sr = new SellResultMessage();
         			sr.sellerUserName = s.sellerUserName;
@@ -194,14 +194,45 @@ public class ClientConnection extends Thread{
         			sr.stock = s.stock;
         			ExchangeServer.exchangeTimer.update(s.timeStamp);
         			sr.timeStamp = ExchangeServer.exchangeTimer.getTime();
+        			stockService.sellStock(s, sr);
     				ExchangeServer.senderToSuper.queue.add(sr);
     				System.out.println("Forwarded to superpeer");
+        			ExchangeServer.clientReplier.messageQueue.add(sr);               		
+        			
         		} else if (message.getClass() == SellResultMessage.class) {
     				System.out.println("Replied to client");
         			ExchangeServer.clientReplier.messageQueue.add(message);               				       			
+        			
         		} else if (message.getClass() == BuyResultMessage.class) {
     				System.out.println("Replied to client");
         			ExchangeServer.clientReplier.messageQueue.add(message);               				        			
+        			
+        		} else if (message.getClass() == MutualFundReserveMessage.class) {
+        			MutualFundReserveMessage m = (MutualFundReserveMessage) message;
+        			int result = stockService.reserveStock(m.stock, m.quantity);
+        			MutualFundReserveResponseMessage mr = new MutualFundReserveResponseMessage();
+        			mr.superpeer = m.superpeer;
+        			mr.stock = m.stock;
+        			mr.quantity = m.quantity;
+        			mr.timeStamp = ExchangeServer.exchangeTimer.getTime();
+        			mr.orderID = m.orderID;
+        			mr.reservationConfirmed = result > 0;
+       				System.out.println("Reserved " + mr.quantity + " units of " + mr.stock + ": " + mr.reservationConfirmed);
+        			ExchangeServer.senderToSuper.queue.add(mr);
+        			
+        		} else if (message.getClass() == MutualFundUpdateMessage.class) {
+        			MutualFundUpdateMessage m = (MutualFundUpdateMessage) message;
+        			stockService.unreserveStock(m.stock, m.quantity);
+    				if (m.doCommit) {
+    					BuyMessage tempBuy = new BuyMessage();
+    					tempBuy.stock = m.stock;
+    					tempBuy.quantity = m.quantity;
+    					stockService.buyStock(tempBuy, new BuyResultMessage());
+    					System.out.println("MF bought " + m.quantity + " units of " + m.stock);
+        			} else {
+        				System.out.println("Unreserved " + m.quantity + " units of " + m.stock);
+        			}
+        			
         		} else {
         			continue;
         		}

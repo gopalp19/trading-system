@@ -43,7 +43,7 @@ public class StockReader {
                 	continue;
                 }
                 
-                if(count > 5){
+                if(count > 30){
                 	break;
                 }
                 
@@ -93,14 +93,6 @@ public class StockReader {
                 count++;
                 LocalDateTime time = getTime(terms[0], terms[1]);
                 for (Integer i : indices) {
-                	/*IPO ipo;
-                    if (!terms[i + OFFSET_COLUMNS].isEmpty()) {
-                        ipo = new IPO(stockArray[i], time, Integer.parseInt(terms[i + OFFSET_COLUMNS]));
-                    }else{
-                        ipo = new IPO(stockArray[i], time, 0);
-                    }
-                    quantities.put(stockArray[i], ipo);*/
-                	
 
                     if (!terms[i + OFFSET_COLUMNS].isEmpty()) {
                     	quantities.get(stockArray[i]).setQuantity(Integer.parseInt(terms[i + OFFSET_COLUMNS]));

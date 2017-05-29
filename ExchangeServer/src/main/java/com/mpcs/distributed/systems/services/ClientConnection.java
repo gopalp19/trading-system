@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.context.ApplicationContext;
 
@@ -27,6 +28,8 @@ public class ClientConnection extends Thread{
     private String userName;
     private UserService userService;
     private StockService stockService;
+    
+    public static ConcurrentHashMap<String, Integer> idToQty = new ConcurrentHashMap<>();
 
     public ClientConnection(ServerSocket serverSocket) throws IOException{
 	    this.serverSocket = serverSocket;
@@ -217,20 +220,21 @@ public class ClientConnection extends Thread{
         			mr.timeStamp = ExchangeServer.exchangeTimer.getTime();
         			mr.orderID = m.orderID;
         			mr.reservationConfirmed = result > 0;
+        			idToQty.put(m.orderID + m.stock, mr.reservationConfirmed ? mr.quantity : 0);
        				System.out.println("Reserved " + mr.quantity + " units of " + mr.stock + ": " + mr.reservationConfirmed);
         			ExchangeServer.senderToSuper.queue.add(mr);
         			
         		} else if (message.getClass() == MutualFundUpdateMessage.class) {
         			MutualFundUpdateMessage m = (MutualFundUpdateMessage) message;
-        			stockService.unreserveStock(m.stock, m.quantity);
+        			stockService.unreserveStock(m.stock, idToQty.get(m.orderID + m.stock));
     				if (m.doCommit) {
     					BuyMessage tempBuy = new BuyMessage();
     					tempBuy.stock = m.stock;
-    					tempBuy.quantity = m.quantity;
+    					tempBuy.quantity = idToQty.get(m.orderID + m.stock);
     					stockService.buyStock(tempBuy, new BuyResultMessage());
-    					System.out.println("MF bought " + m.quantity + " units of " + m.stock);
+    					System.out.println("MF bought " + idToQty.get(m.orderID + m.stock) + " units of " + m.stock);
         			} else {
-        				System.out.println("Unreserved " + m.quantity + " units of " + m.stock);
+        				System.out.println("Unreserved " + idToQty.get(m.orderID + m.stock) + " units of " + m.stock);
         			}
         			
         		} else {

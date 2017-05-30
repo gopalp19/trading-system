@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -43,8 +44,6 @@ public class ClientConnection extends Thread{
 	public void run() {
         try (Scanner inputStream = new Scanner(new InputStreamReader(clientSocket.getInputStream()))){
         	PrintStream outputStream = new PrintStream(clientSocket.getOutputStream());
-
-        	//TODO - Logging mechanism should start here before loop
 
         	//Should be [client|exchange]:[userName|exchangeName] only
         	String clientsInput = inputStream.nextLine();
@@ -146,6 +145,8 @@ public class ClientConnection extends Thread{
         	System.out.println("Malformed message from client");
         } catch (IOException e) {
         	System.out.println("Connection to client is broken because of: " + e);
+        } catch (NoSuchElementException e) {
+        	return;
         } finally {
             try {
                 clientSocket.close();
@@ -204,7 +205,6 @@ public class ClientConnection extends Thread{
         			stockService.sellStock(s, sr);
     				ExchangeServer.senderToSuper.queue.add(sr);
     				System.out.println("Forwarded to superpeer");
-        			ExchangeServer.clientReplier.messageQueue.add(sr);               		
         			
         		} else if (message.getClass() == SellResultMessage.class) {
     				System.out.println("Replied to client");

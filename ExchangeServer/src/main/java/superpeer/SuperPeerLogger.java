@@ -22,7 +22,8 @@ class SuperPeerLogger extends Thread {
 	}
 
 	public void run() {
-		LocalDateTime logStamp = LocalDateTime.now();
+		String logStamp = LocalDateTime.now().toString().replaceAll(":|\\.","-");
+
 		String logName = logPath + myContinent + "_log_" + logStamp + ".txt";
 
 		try (

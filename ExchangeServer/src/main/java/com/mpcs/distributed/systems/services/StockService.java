@@ -63,6 +63,7 @@ public class StockService {
         			br.quantityBought = message.quantity;
         			br.totalPrice = stockPrice.getPrice() * message.quantity;
         			System.out.println("new qty of " + message.stock + " is " + updatedStockQuantity);
+        			ExchangeServer.logger.messageQueue.add(br);
 					//Return success, user bough stocks
 				}else{
 					//Quantity too large...give error message
@@ -99,6 +100,7 @@ public class StockService {
     			sr.quantitySold = message.quantity;
     			sr.totalPrice = stockPrice.getPrice() * message.quantity;
     			System.out.println("new qty of " + message.stock + " is " + updatedStockQuantity);
+    			ExchangeServer.logger.messageQueue.add(sr);
 					
     			//Return success, user sold stocks
 			}else{

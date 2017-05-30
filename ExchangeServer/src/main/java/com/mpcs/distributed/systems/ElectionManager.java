@@ -14,7 +14,7 @@ import resourcesupport.Exchange;
  *
  */
 public class ElectionManager {
-	static int timeout = 1000; // ms timeout
+	static int timeout = 500; // ms timeout
 	
 	static AtomicBoolean inElection = new AtomicBoolean(false);
 	static Thread thread;

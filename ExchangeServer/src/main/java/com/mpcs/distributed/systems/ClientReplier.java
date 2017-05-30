@@ -23,7 +23,8 @@ public class ClientReplier implements Runnable {
 	
 	public ClientReplier() {
 		try {
-			logger = new PrintWriter(new File(ExchangeServer.exchange.toString() + "." + System.currentTimeMillis() + ".log"));			
+			FileOutputStream fos = new FileOutputStream(new File(ExchangeServer.exchange.toString() + "." + System.currentTimeMillis() + ".log"));
+			logger = new PrintWriter(fos, true);			
 		} catch (IOException e) {
 			logger = null;
 			System.out.println("Error: IOException when trying to start a log file for " + ExchangeServer.exchange);

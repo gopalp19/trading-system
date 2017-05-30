@@ -10,7 +10,7 @@ import java.util.*;
  * @author Alan
  */
 public class ExchangeTimer extends TimerTask {
-	private static int period = 5000; // real ms between simulated hours
+	private static int period = 2500; // real ms between simulated hours
 	private static LocalDateTime zeroTime = LocalDateTime.of(2016, 1, 4, 8, 0);
 	
 	private AtomicInteger ticks = new AtomicInteger(0);

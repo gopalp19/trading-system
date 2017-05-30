@@ -34,7 +34,7 @@ import com.mpcs.distributed.systems.services.ClientConnection;
 public class ExchangeServer extends SpringBootServletInitializer {
 	public static ExchangeTimer exchangeTimer = new ExchangeTimer();
 	public static SuperPeer superPeer = null;
-	public static ClientReplier clientReplier = new ClientReplier();
+	public static ClientReplier clientReplier;
 	public static SenderToSuper senderToSuper;
 	public static Exchange[] neighborPeers = null;
     public static Exchange exchange = null;
@@ -68,6 +68,7 @@ public class ExchangeServer extends SpringBootServletInitializer {
         	exchange = Exchange.valueOf(exchangeServerName);
         	neighborPeers = exchange.neighbors();
         	senderToSuper = new SenderToSuper(exchange);
+        	clientReplier = new ClientReplier();
         } catch (IllegalArgumentException | NullPointerException | ArrayIndexOutOfBoundsException e) {
             System.out.println("Error: specified invalid exchange name. See resourcesupport.Exchange for list of valid names.");
             System.exit(1);

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mpcs.distributed.systems.ExchangeServer;
-import com.mpcs.distributed.systems.ExchangeTimer;
 import com.mpcs.distributed.systems.model.StockPrice;
 import com.mpcs.distributed.systems.model.StockQuantity;
 import com.mpcs.distributed.systems.repositories.StockPriceRepository;
@@ -46,7 +45,7 @@ public class StockService {
 			if(!stockQuantityList.isEmpty()){
 
 				StockQuantity stockQuantity = stockQuantityList.get(0);
-				StockPrice stockPrice = stockPrices.get(ExchangeTimer.ticksSinceStart(currentExchangeTime));
+				StockPrice stockPrice = stockPrices.get(0);
 				
 				if(stockQuantity.getIpoTime().isAfter(currentExchangeTime)){
 					//IPO has not started and stocks do not exist
@@ -90,7 +89,7 @@ public class StockService {
 			if(!stockQuantityList.isEmpty()){
 
 				StockQuantity stockQuantity = stockQuantityList.get(0);
-				StockPrice stockPrice = stockPrices.get(ExchangeTimer.ticksSinceStart(currentExchangeTime));
+				StockPrice stockPrice= stockPrices.get(0);
 				
 				//Update db to insert stocks
 				int updatedStockQuantity = stockQuantity.getQuantity() + message.quantity;

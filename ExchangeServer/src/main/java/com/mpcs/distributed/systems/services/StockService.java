@@ -30,13 +30,11 @@ public class StockService {
 
 	public void buyStock(BuyMessage message, BuyResultMessage br) {
 		System.out.println("Inside stock service buyStock");
-		LocalDateTime test = LocalDateTime.of(2016, Month.JANUARY, 1, 9, 5);
-		LocalDateTime newTest =  test.truncatedTo(ChronoUnit.HOURS);
-		
+	
 		//LocalDateTime currentExchangeTime =  ExchangeServer.exchangeTimer.getTime().truncatedTo(ChronoUnit.HOURS);
-		LocalDateTime currentExchangeTime = newTest;
+		LocalDateTime currentExchangeTime = marketHours(ExchangeServer.exchangeTimer.getTime());
 		
-		List<StockPrice> stockPrices = stockPriceRepository.findByStockNameAndExchangeNameAndSystemDateTime(message.stock.toString(), ExchangeServer.exchange.toString(), newTest);
+		List<StockPrice> stockPrices = stockPriceRepository.findByStockNameAndExchangeNameAndSystemDateTime(message.stock.toString(), ExchangeServer.exchange.toString(), currentExchangeTime);
 		
 		if(stockPrices.isEmpty()){
 			//Stock not in exchanges region
@@ -64,7 +62,7 @@ public class StockService {
 					
         			br.quantityBought = message.quantity;
         			br.totalPrice = stockPrice.getPrice() * message.quantity;
-					
+        			System.out.println("new qty of " + message.stock + " is " + updatedStockQuantity);
 					//Return success, user bough stocks
 				}else{
 					//Quantity too large...give error message
@@ -78,14 +76,13 @@ public class StockService {
 
 	public void sellStock(SellMessage message, SellResultMessage sr) {
 		System.out.println("Inside stock service sellStock");
-		LocalDateTime test = LocalDateTime.of(2016, Month.JANUARY, 1, 9, 5);
-		LocalDateTime newTest =  test.truncatedTo(ChronoUnit.HOURS);
+		LocalDateTime currentExchangeTime = marketHours(ExchangeServer.exchangeTimer.getTime());
 		
-		List<StockPrice> stockPrices = stockPriceRepository.findByStockNameAndExchangeNameAndSystemDateTime(message.stock.toString(), ExchangeServer.exchange.toString(), newTest);
+		List<StockPrice> stockPrices = stockPriceRepository.findByStockNameAndExchangeNameAndSystemDateTime(message.stock.toString(), ExchangeServer.exchange.toString(), currentExchangeTime);
 		
 		if(stockPrices.isEmpty()){
 			//Stock not in exchanges region
-		}else{
+		} else {
 			//Stock exists 
 			List<StockQuantity> stockQuantityList = stockQuantityRepository.findByStockNameAndExchangeName(message.stock.toString(), ExchangeServer.exchange.toString());
 			
@@ -101,6 +98,7 @@ public class StockService {
 				
     			sr.quantitySold = message.quantity;
     			sr.totalPrice = stockPrice.getPrice() * message.quantity;
+    			System.out.println("new qty of " + message.stock + " is " + updatedStockQuantity);
 					
     			//Return success, user sold stocks
 			}else{
@@ -114,10 +112,9 @@ public class StockService {
 	 */
 	public int reserveStock(Stock stock, int quantity) {
 		System.out.println("Inside stock service reserveStock");
-		LocalDateTime test = LocalDateTime.of(2016, Month.JANUARY, 1, 9, 5);
-		LocalDateTime newTest =  test.truncatedTo(ChronoUnit.HOURS);
+		LocalDateTime currentExchangeTime = marketHours(ExchangeServer.exchangeTimer.getTime());
 
-		List<StockPrice> stockPrices = stockPriceRepository.findByStockNameAndExchangeNameAndSystemDateTime(stock.toString(), stock.exchange().toString(), newTest);
+		List<StockPrice> stockPrices = stockPriceRepository.findByStockNameAndExchangeNameAndSystemDateTime(stock.toString(), stock.exchange().toString(), currentExchangeTime);
 		
 		if(stockPrices.isEmpty()){
 			//Stock not in exchanges region
@@ -162,5 +159,22 @@ public class StockService {
 			thresholds.put(stock, 0);
 			return 0;
 		}
+	}
+	
+	private static LocalDateTime marketHours(LocalDateTime old) {
+		if (old == null) return null;
+		switch (old.getDayOfWeek()) {
+			case SATURDAY:
+				return old.withDayOfYear(old.getDayOfYear()-1).withHour(16);
+			case SUNDAY:
+				return old.withDayOfYear(old.getDayOfYear()-2).withHour(16);
+			default:
+				if (old.getHour() < 8) {
+					return marketHours(old.withDayOfYear(old.getDayOfYear()-1).withHour(16));
+				} else if (old.getHour() > 16) {
+					return old.withHour(16);
+				}
+		}
+		return old;
 	}
 }

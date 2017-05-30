@@ -38,6 +38,7 @@ public class StockService {
 		
 		if(stockPrices.isEmpty()){
 			//Stock not in exchanges region
+			System.out.println("Stock not in exchange's region");
 		}else{
 			//Stock exists 
 			List<StockQuantity> stockQuantityList = stockQuantityRepository.findByStockNameAndExchangeName(message.stock.toString(), ExchangeServer.exchange.toString());
@@ -71,6 +72,7 @@ public class StockService {
 				}
 			}else{
 				//Stock is not found in quantities table...this should never happen at this point
+				System.out.println("Stock not found in qty table");
 			}
 		}
 	}
@@ -83,6 +85,7 @@ public class StockService {
 		
 		if(stockPrices.isEmpty()){
 			//Stock not in exchanges region
+			System.out.println("Stock not in exchange's region");
 		} else {
 			//Stock exists 
 			List<StockQuantity> stockQuantityList = stockQuantityRepository.findByStockNameAndExchangeName(message.stock.toString(), ExchangeServer.exchange.toString());
@@ -105,6 +108,7 @@ public class StockService {
     			//Return success, user sold stocks
 			}else{
 				//Stock is not found in quantities table...this should never happen at this point
+				System.out.println("Stock not found in qty table");
 			}
 		}
 	}

@@ -34,7 +34,7 @@ public class SuperPeerTest {
 		MutualFundResultMessage resultMsg = new MutualFundResultMessage(Exchange.LONDON, "user1", MutualFund.BANKING, 20, LocalDateTime.now(), "1");
 		MutualFundReserveMessage rsvMsg = new MutualFundReserveMessage(Continent.EUROPE, Stock.BP_PLC, 20, LocalDateTime.now(), "0");
 		MutualFundReserveResponseMessage resMsg = new MutualFundReserveResponseMessage(Continent.EUROPE, Stock.DEUTSCHE_BANK, 20, LocalDateTime.now(), "0", true);
-		MutualFundUpdateMessage updateMsg = new MutualFundUpdateMessage(Continent.EUROPE, Stock.BP_PLC, 20, LocalDateTime.now(), "0", true);
+		MutualFundUpdateMessage updateMsg = new MutualFundUpdateMessage(Continent.EUROPE, Stock.BP_PLC, LocalDateTime.now(), "0", true);
 
 		londonSender.send(buyMsg);
 		Thread.sleep(1000);

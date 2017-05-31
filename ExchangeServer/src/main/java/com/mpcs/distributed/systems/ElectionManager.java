@@ -14,7 +14,7 @@ import resourcesupport.Exchange;
  *
  */
 public class ElectionManager {
-	static int timeout = 500; // ms timeout
+	static int timeout = 5000; // ms timeout
 	
 	static AtomicBoolean inElection = new AtomicBoolean(false);
 	static Thread thread;
@@ -50,7 +50,7 @@ public class ElectionManager {
 	private static boolean checkAlive(Exchange e) { 
 		try (
 			Socket socket = new Socket("localhost", e.portNum());
-			PrintWriter pw = new PrintWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
 			Scanner scan = new Scanner(socket.getInputStream())
 		) {
 			System.out.println("Pinging " + e + "(rank)" + e.ordinal());

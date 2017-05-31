@@ -43,6 +43,7 @@ public class ClientConnection extends Thread{
     }
     
 	public void run() {
+		System.out.println("New ClientConnection");
         try (Scanner inputStream = new Scanner(new InputStreamReader(clientSocket.getInputStream()))){
         	PrintStream ps = new PrintStream(clientSocket.getOutputStream());
         	PrintWriter outputStream = new PrintWriter(ps, true);
@@ -52,6 +53,7 @@ public class ClientConnection extends Thread{
         	if (splitted[0].equals("exchange")) {
         		// only time a peer contacts another peer directly is during election
         		try {
+        			System.out.println("Exchange " + splitted[1] + " wants election.");
         			outputStream.println("stop");
             		ElectionManager.handleElectionRequest();
             		return;

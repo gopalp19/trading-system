@@ -8,18 +8,22 @@ import java.time.LocalDateTime;
 
 public class SuperPeerTest {
 	public static void main(String[] args) throws InterruptedException {
+		// Real superpeers
 		SuperPeer londonSuper = new SuperPeer(Exchange.LONDON);
 		SuperPeer nySuper = new SuperPeer(Exchange.NEW_YORK_STOCK_EXCHANGE);
 		SuperPeer johanSuper = new SuperPeer(Exchange.JOHANNESBURG);
 		SuperPeer hkSuper = new SuperPeer(Exchange.HONG_KONG);
+
+		// Dummy Exchanges (Simple message senders and receivers)
 		DummyExchangeSender londonSender = new DummyExchangeSender(Exchange.LONDON);
-		DummyExchangeSender parisSender = new DummyExchangeSender(Exchange.EURONEXT_PARIS);
+		DummyExchangeSender tokyoSender = new DummyExchangeSender(Exchange.TOKYO);
 		DummyExchangeReceiver londonRec = new DummyExchangeReceiver(Exchange.LONDON);
 		DummyExchangeReceiver parisRec = new DummyExchangeReceiver(Exchange.EURONEXT_PARIS);
 		DummyExchangeReceiver frankfurtRec = new DummyExchangeReceiver(Exchange.FRANKFURT);
 		DummyExchangeReceiver nyseRec = new DummyExchangeReceiver(Exchange.NEW_YORK_STOCK_EXCHANGE);
 		DummyExchangeReceiver tokyoRec = new DummyExchangeReceiver(Exchange.TOKYO);
 
+		// Starting threads
 		londonSuper.start();
 		nySuper.start();
 		johanSuper.start();
@@ -30,28 +34,22 @@ public class SuperPeerTest {
 		frankfurtRec.start();
 		tokyoRec.start();
 
+		// Send a mutual fund buy message
 		MutualFundBuyMessage buyMsg = new MutualFundBuyMessage(Exchange.LONDON, "user0", MutualFund.BANKING, 20, LocalDateTime.now(), "0");
-		MutualFundResultMessage resultMsg = new MutualFundResultMessage(Exchange.LONDON, "user1", MutualFund.BANKING, 20, LocalDateTime.now(), "1");
-		MutualFundReserveMessage rsvMsg = new MutualFundReserveMessage(Continent.EUROPE, Stock.BP_PLC, 20, LocalDateTime.now(), "0");
-		MutualFundReserveResponseMessage resMsg = new MutualFundReserveResponseMessage(Continent.EUROPE, Stock.DEUTSCHE_BANK, 20, LocalDateTime.now(), "0", true);
-		MutualFundUpdateMessage updateMsg = new MutualFundUpdateMessage(Continent.EUROPE, Stock.BP_PLC, 20, LocalDateTime.now(), "0", true);
-
 		londonSender.send(buyMsg);
 		Thread.sleep(1000);
 
-		// for (Stock stock : MutualFund.BANKING.stocks)
-		// 	londonSender.send(new MutualFundReserveResponseMessage(Continent.EUROPE, stock, 20, LocalDateTime.now(), "0", false));
-
-		// londonSender.send(resMsg);
-		// londonSender.send(updateMsg);
-		// Thread.sleep(1000);
-		// londonSender.send(updateMsg);
-		// Thread.sleep(1000);
-		// londonRec.printLog();
-		// parisRec.printLog();
-		// frankfurtRec.printLog();
-		// tokyoRec.printLog();
-		// nyseRec.printLog();
+		// Send reservation confirmation messages
+		for (Stock stock : MutualFund.BANKING.stocks)
+			tokyoSender.send(new MutualFundReserveResponseMessage(Continent.EUROPE, stock, 20, LocalDateTime.now(), "0", true));
+		
+		Thread.sleep(1000);
+		// See what happened
+		londonRec.printLog();
+		parisRec.printLog();
+		frankfurtRec.printLog();
+		tokyoRec.printLog();
+		nyseRec.printLog();
 
 	}
 }

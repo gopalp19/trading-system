@@ -3,6 +3,7 @@ package com.mpcs.distributed.systems.services;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.LocalDateTime;
@@ -43,8 +44,8 @@ public class ClientConnection extends Thread{
     
 	public void run() {
         try (Scanner inputStream = new Scanner(new InputStreamReader(clientSocket.getInputStream()))){
-        	PrintStream outputStream = new PrintStream(clientSocket.getOutputStream());
-
+        	PrintStream ps = new PrintStream(clientSocket.getOutputStream());
+        	PrintWriter outputStream = new PrintWriter(ps, true);
         	//Should be [client|exchange]:[userName|exchangeName] only
         	String clientsInput = inputStream.nextLine();
         	String[] splitted = clientsInput.split(":");

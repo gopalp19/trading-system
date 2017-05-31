@@ -53,10 +53,14 @@ public class ElectionManager {
 			PrintWriter pw = new PrintWriter(socket.getOutputStream());
 			Scanner scan = new Scanner(socket.getInputStream())
 		) {
+			System.out.println("Pinging " + e + "(rank)" + e.ordinal());
 			socket.setSoTimeout(timeout);
 			pw.println("exchange:" + ExchangeServer.exchange);
 			String reply = scan.nextLine();
-			if (reply.equals("stop")) return true;
+			if (reply.equals("stop")) {
+				System.out.println(e + " replied 'stop'");
+				return true;
+			}
 		} catch (Exception exception) {
 			return false;
 		}

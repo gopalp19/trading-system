@@ -36,6 +36,7 @@ public class SuperPeerTest {
 
 		// Send a mutual fund buy message
 		MutualFundBuyMessage buyMsg = new MutualFundBuyMessage(Exchange.LONDON, "user0", MutualFund.BANKING, 20, LocalDateTime.now(), "0");
+
 		londonSender.send(buyMsg);
 		Thread.sleep(1000);
 

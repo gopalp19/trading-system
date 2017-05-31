@@ -43,7 +43,7 @@ class ExchangeServerTest {
 			try {
 				DummyExchangeUser user = new DummyExchangeUser(exchange, "anon", false);
 				user.setDaemon(true);
-				// TODO - start the thread and do stuff
+				user.start();
 			} catch (IOException e) {
 				return;
 			}
@@ -79,6 +79,7 @@ class ExchangeServerTest {
 				original = true;
 				return true;
 			}
+			original = false;
 			numUsers = Integer.parseInt(args[0]); 
 			duration = Integer.parseInt(args[1]);
 			switch (args[2]) {

@@ -5,12 +5,13 @@ import resourcesupport.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Random;
 import java.util.concurrent.*;
 
 /**
  * Spawn a number of DummyUsers that place random orders for an amount of time.
  * Running command:
- * java ExchangeServerTest <num_users> <ms_duration> <BUY | SELL> [optional_exchange_name]
+ * java ExchangeServerTest <num_users> <ms_duration> <BUY | SELL> [optional_exchange_name] // if no exchange specified, will be chosen randomly for each user
  * 
  * OR
  * 
@@ -38,13 +39,17 @@ class ExchangeServerTest {
 	
 	private static void doNew() {
 		System.out.println("Creating " + numUsers + " DummyUsers to run for " + duration + " ms");
+		Random rand = new Random();
 		
 		for (int i = 0; i < numUsers; i++) {
+			Exchange ex = exchange == null ? Exchange.values()[rand.nextInt(Exchange.values().length)] : exchange;
+			System.out.println("DummyUser " + i + " locates at " + ex);
 			try {
-				DummyExchangeUser user = new DummyExchangeUser(exchange, "anon", false);
+				DummyExchangeUser user = new DummyExchangeUser(ex, "anon", false);
 				user.setDaemon(true);
 				user.start();
 			} catch (IOException e) {
+				System.out.println("IOException. Exiting. Is " + ex + " exchange even up yet?");
 				return;
 			}
 		}
@@ -93,6 +98,8 @@ class ExchangeServerTest {
 			}
 			if (args.length > 3) {
 				exchange = Exchange.valueOf(args[3]);
+			} else {
+				exchange = null;
 			}
 		} catch (Exception e) {
 			System.out.println("Error: please run as \"java ExchangeServerTest <num_users> <ms_duration> <BUY | SELL> [optional_exchange_name]\"");

@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class DummyExchangeUser extends Thread {
-	ArrayList<Stock> localstocks;
+//	ArrayList<Stock> localstocks;
+	static Stock[] allstocks = Stock.values();
 	private boolean original = true;
 	private Exchange myEx;
 	private int myPort;
@@ -28,7 +29,7 @@ public class DummyExchangeUser extends Thread {
 		log = new ArrayList<Message>();
 	 	socket = new Socket("localhost", myEx.portNum());
 		this.username = username;
-		localstocks = myEx.getStocks();
+//		localstocks = myEx.getStocks();
 
 		try {
 			out = new PrintWriter(socket.getOutputStream(), true);
@@ -97,21 +98,31 @@ public class DummyExchangeUser extends Thread {
 	 */
 	void doNew() {
 		Random r = new Random();
-		int num = localstocks.size();
+		int num = allstocks.length;
+		try {
+			in.readLine();			
+		} catch (IOException e) {
+			System.out.println("IOException. Exiting. Is " + myEx + " exchange even up yet?");
+			return;
+		}
 		while (!ExchangeServerTest.end) {
 			Message m;
 			if (ExchangeServerTest.buy) {
-				m = new BuyMessage(myEx, username, localstocks.get(r.nextInt(num)), 1, null, null);
+				m = new BuyMessage(myEx, username, allstocks[r.nextInt(num)], 1, null, null);
 			} else {
-				m = new SellMessage(myEx, username, localstocks.get(r.nextInt(num)), 1, null, null);
+				m = new SellMessage(myEx, username, allstocks[r.nextInt(num)], 1, null, null);
 			}
 			send(m);
 			try {
+				ArrayList<String> raw_message = new ArrayList<String>();
 				String line = in.readLine();
-				while (!line.isEmpty()) {
-					System.out.println(line);
+				while (!line.isEmpty()) {// messages finished by newline
+					raw_message.add(line);
 					line = in.readLine();
 				}
+				Message full_message = MessageBroker.parse(raw_message);
+				full_message.print();
+				log.add(full_message);
 			} catch (IOException e) {
 				System.out.println("closing: ioexception");
 				return;

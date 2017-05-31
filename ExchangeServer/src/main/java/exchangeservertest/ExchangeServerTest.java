@@ -43,6 +43,7 @@ class ExchangeServerTest {
 			try {
 				DummyExchangeUser user = new DummyExchangeUser(exchange, "anon", false);
 				user.setDaemon(true);
+				// TODO - start the thread and do stuff
 			} catch (IOException e) {
 				return;
 			}

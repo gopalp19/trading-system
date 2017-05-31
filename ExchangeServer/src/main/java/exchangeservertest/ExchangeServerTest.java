@@ -4,10 +4,14 @@ import messenger.*;
 import resourcesupport.*;
 import java.time.LocalDateTime;
 
+/**
+ * Spawn a number of DummyUsers that place random orders for an amount of time.
+ * @author Alan
+ *
+ */
 class ExchangeServerTest {
 	public static void main(String[] args) {
 		String username = "user1";
-		Integer orderId = 0;
 
 		DummyExchangeUser user;
 		try {

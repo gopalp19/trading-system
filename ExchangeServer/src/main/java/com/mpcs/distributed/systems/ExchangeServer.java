@@ -50,7 +50,7 @@ public class ExchangeServer extends SpringBootServletInitializer {
 		return (args) -> {
             AppContext.setApplicationContext(ctx);
 			userRepository.save(new User("gopalp", exchange.toString()));
-			
+			userRepository.save(new User("anon", exchange.toString()));
 			int count = 1;
 			while(count <= 10){
 				userRepository.save(new User("user" + count, exchange.name()));

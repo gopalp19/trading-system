@@ -39,7 +39,8 @@ public class ExchangeServer extends SpringBootServletInitializer {
 	public static Exchange[] neighborPeers = null;
     public static Exchange exchange = null;
     public static Logger logger = null;
-
+    public static SuperChecker superChecker = null;
+    
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(ExchangeServer.class);
@@ -71,6 +72,7 @@ public class ExchangeServer extends SpringBootServletInitializer {
         	senderToSuper = new SenderToSuper(exchange);
         	clientReplier = new ClientReplier();
         	logger = new Logger();
+        	superChecker = new SuperChecker(exchange);
         } catch (IllegalArgumentException | NullPointerException | ArrayIndexOutOfBoundsException e) {
             System.out.println("Error: specified invalid exchange name. See resourcesupport.Exchange for list of valid names.");
             System.exit(1);

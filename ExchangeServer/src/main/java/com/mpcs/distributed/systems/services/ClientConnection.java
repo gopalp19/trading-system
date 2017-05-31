@@ -55,7 +55,7 @@ public class ClientConnection extends Thread{
         		try {
         			System.out.println("Exchange " + splitted[1] + " wants election.");
         			outputStream.println("stop");
-            		ElectionManager.handleElectionRequest();
+            		ExchangeServer.superChecker.request();
             		return;
         		} catch (IndexOutOfBoundsException | IllegalArgumentException | NullPointerException e) {
                     System.out.println("Error: specified invalid exchange name. See resourcesupport.Exchange for list of valid names.");	

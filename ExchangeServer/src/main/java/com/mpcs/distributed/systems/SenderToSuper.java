@@ -36,7 +36,7 @@ public class SenderToSuper implements Runnable {
 					pw.println();
 					break;
 				} catch (IOException ioe) {
-					ElectionManager.handleElectionRequest();
+					ExchangeServer.superChecker.request();
 					try {
 						Thread.sleep(timeout);
 					} catch (InterruptedException ie) {

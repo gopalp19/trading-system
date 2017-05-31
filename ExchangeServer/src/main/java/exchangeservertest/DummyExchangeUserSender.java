@@ -17,7 +17,7 @@ public class DummyExchangeUserSender {
 
 	public void send(Message msg) {
 		try (
-				Socket socket = new Socket("localhost", superPort);
+				Socket socket = new Socket("localhost", myEx.country().continent().portNum());
 				PrintWriter out = new PrintWriter(socket.getOutputStream());
 			)
 		{

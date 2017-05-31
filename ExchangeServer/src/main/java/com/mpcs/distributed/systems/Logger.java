@@ -23,7 +23,8 @@ public class Logger implements Runnable {
 	public Logger() {
 		messageQueue = new MessageQueue();
         try {
-            FileOutputStream fos = new FileOutputStream(new File(ExchangeServer.exchange.toString() + "." + System.currentTimeMillis() + ".log"));
+        	new File("Logs").mkdirs();
+        	FileOutputStream fos = new FileOutputStream(new File("Logs/" + ExchangeServer.exchange.toString() + "." + System.currentTimeMillis() + ".log"));
             logger = new PrintWriter(fos, true);            
         } catch (IOException e) {
             System.out.println("Error: IOException when trying to start a log file for " + ExchangeServer.exchange);

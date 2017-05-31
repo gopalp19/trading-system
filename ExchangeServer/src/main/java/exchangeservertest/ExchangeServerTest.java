@@ -46,7 +46,6 @@ class ExchangeServerTest {
 			} catch (IOException e) {
 				return;
 			}
-			// do something
 		}
 
 		// shut down after waiting duration

@@ -25,7 +25,7 @@ public class ExchangeTimer extends TimerTask {
 	public void run() {
 		synchronized(ticks) {
 			ticks.incrementAndGet();
-			System.out.println("tick: " + zeroTime.plusHours(ticks.get()));
+			System.out.println(ExchangeServer.exchange + " tick: " + zeroTime.plusHours(ticks.get()));
 		}
 	}
 	

@@ -72,6 +72,9 @@ public final class BuyResultMessage extends ExchangeMessage {
                 case "timeStamp":
                 	this.timeStamp = LocalDateTime.parse(value);
                 	break;
+                case "message":
+                	this.notificationMessage = value;
+                	break;
                 default:
                     throw new InputMismatchException("BUY_RESULT header \"" + header + "\" not recognized");
             }

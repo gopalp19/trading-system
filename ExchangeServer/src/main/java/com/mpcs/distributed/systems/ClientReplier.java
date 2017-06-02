@@ -55,7 +55,6 @@ public class ClientReplier implements Runnable {
 			}
 			if (socket == null) {
 				System.out.println("No known socket for user " + name);
-				messageQueue.add(m);
 				continue;
 			}
 			try {
@@ -66,7 +65,6 @@ public class ClientReplier implements Runnable {
 				}
 				pw.println();
 			} catch (IOException e) {
-			    messageQueue.add(m);
 			    System.out.println("IOException when writing to client " + name);
 	            continue;
 	        }
